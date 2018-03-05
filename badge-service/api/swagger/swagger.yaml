@@ -1,0 +1,179 @@
+swagger: "2.0"
+info:
+  description: "connection services API"
+  version: "1.0"
+  title: "TL Badge services API"
+basePath: "/v2/components/badge-service"
+schemes:
+- "http"
+# format of bodies a client can send (Content-Type)
+securityDefinitions:
+  UserSecurity:
+    type: apiKey
+    in: header
+    name: Authorization
+paths:  
+  /org/{orgId}/badges:
+    get:
+      tags:
+      - "badges "
+      summary: "Get all badges"
+      description: "Get all badges"
+      operationId: "getAllBadges"
+      security: 
+        - UserSecurity: []
+      produces:
+      - "application/json"
+      parameters:
+      - name: "orgId"
+        in: "path"
+        description: "org id"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "A list of badges."
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/badges"
+        default:
+          description: "Unexpected error"
+      x-swagger-router-controller: "badgeService"
+    post:
+      tags:
+      - "badges"
+      summary: "Creates a badge."
+      description: "Creates a badge."
+      operationId: "createBadge"
+      security: 
+        - UserSecurity: [] 
+      produces:
+      - "application/json"
+      parameters:    
+      - name: "body"
+        in: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/badges"
+      - name: "orgId"
+        in: "path"
+        description: "org id"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "badge Details"
+          schema:
+            type: "object"
+            properties: {}
+        400:
+          description: "Error creating a new badge"
+        default:
+          description: "Unexpected error"
+    
+      x-swagger-router-controller: "badgeService"
+  /org/{orgId}/badges/{badgeId}:
+    get:
+      tags:
+      - "badge by badge id"
+      summary: "Get badge"
+      description: "Get badge by badgeId"
+      operationId: "getBadgeById"
+      security: 
+        - UserSecurity: []
+      parameters:
+        - name: badgeId
+          in: path
+          description: badgeId
+          required: true
+          type: string
+        - name: "orgId"
+          in: "path"
+          description: "org id"
+          required: true
+          type: "string"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "A json of type for given badgeId."
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/badges"
+        default:
+          description: "Unexpected error"
+      x-swagger-router-controller: "badgeService" 
+    delete:
+      tags:
+      - "Delete type by badge id"
+      summary: "delete badge"
+      description: "delete badge by badgeId"
+      operationId: "deleteBadge"
+      security: 
+        - UserSecurity: []
+      parameters:
+        - name: badgeId
+          in: path
+          description: badgeId
+          required: true
+          type: string
+        - name: "orgId"
+          in: "path"
+          description: "org id"
+          required: true
+          type: "string"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "deleted badge."
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/badges"
+        default:
+          description: "Unexpected error"
+      x-swagger-router-controller: "badgeService"     
+    put:
+      tags:
+      - "update badge by badge id"
+      summary: "updates a badge."
+      description: "updates a badge."
+      operationId: "updateBadge"
+      security: 
+        - UserSecurity: []
+      parameters:
+        - name: badgeId
+          in: path
+          description: badgeId
+          required: true
+          type: string 
+        - name: "body"
+          in: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/badges"
+        - name: "orgId"
+          in: "path"
+          description: "org id"
+          required: true
+          type: "string"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "update badge."
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/badges"
+        default:
+          description: "Unexpected error"
+      x-swagger-router-controller: "badgeService" 
+  /swagger:
+    x-swagger-pipe: swagger_raw
+definitions:  
+  badges:
+    type: "object"    

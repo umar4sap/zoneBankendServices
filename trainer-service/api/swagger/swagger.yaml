@@ -1,0 +1,221 @@
+swagger: "2.0"
+info:
+  description: "lab services"
+  version: "1.0"
+  title: "TL publisher bio services"
+  contact:
+    name:  Veegam API Support
+    email: xyz@veegam.com
+basePath: "/v2/components/publisher"
+schemes:
+- "http"
+securityDefinitions:
+  UserSecurity:
+    type: apiKey
+    in: header
+    name: Authorization
+
+paths:
+  /org/{orgId}/bios:
+    get:
+      tags:
+      - "bio"
+      summary: "Get all publishers"
+      description: "Get all publishers"
+      operationId: "getAllPublisherBios"   
+      security: 
+        - UserSecurity: [] 
+      produces:
+      - "application/json"
+      parameters:
+      - name: "orgId"
+        in: "path"
+        description: "org id"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "A list of publishers."
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/bios"
+        default:
+          description: "Unexpected error"
+      x-swagger-router-controller: "bioService"
+      
+    post:
+      tags:
+      - "bio"
+      summary: "Creates a publisher bio."
+      description: "Creates a publisher bio"
+      operationId: "createPublisherBio"
+      security: 
+        - UserSecurity: [] 
+      produces:
+      - "application/json"
+      parameters: 
+      - name: "orgId"
+        in: "path"
+        description: "org id"
+        required: true
+        type: "string"
+      - name: "body"
+        in: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/bios"
+      responses:
+        200:
+          description: "bios details"
+          schema:
+            type: "object"
+            properties: {}
+        400:
+          description: "Error creating a new publishers"
+        default:
+          description: "Unexpected error"
+      x-swagger-router-controller: "bioService"
+      
+  /org/{orgId}/bios/{authorId}:
+    put:
+      tags:
+      - "bio"
+      summary: "Update a publisher bio."
+      description: "Update a publisher bio"
+      operationId: "updatePublisherBio"
+      security: 
+        - UserSecurity: [] 
+      produces:
+      - "application/json"
+      parameters: 
+      - name: "orgId"
+        in: "path"
+        description: "org id"
+        required: true
+        type: "string"
+      - name: "authorId"
+        in: "path"
+        description: "authorId to be updated"
+        required: true
+        type: "string"
+      - name: "body"
+        in: "body"
+        description: "publisher bio details that need to be added to the system."
+        required: true
+        schema:
+          $ref: "#/definitions/bios"
+      responses:
+        200:
+          description: "bios details"
+          schema:
+            type: "object"
+            properties: {}
+        400:
+          description: "Error update bios"
+        default:
+          description: "Unexpected error"
+      x-swagger-router-controller: "bioService"
+
+    delete:
+      tags:
+      - "bio"
+      summary: "Delete a publisher bio"
+      description: "delete a publisher bio"
+      operationId: "deletePublisherBio"
+      security: 
+        - UserSecurity: [] 
+      produces:
+      - "application/json"
+      parameters:
+      - name: "orgId"
+        in: "path"
+        description: "org id"
+        required: true
+        type: "string"
+      - name: "authorId"
+        in: "path"
+        description: "authorId to be deleted"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "bio details"
+          schema:
+            type: "object"
+            properties: {}
+        400:
+          description: "Error deleting the publisher bio"
+        404: 
+          description: "Return 404 error when the lab corosponding to the authorId does not exists."
+        default:
+          description: "Unexpected error"
+      x-swagger-router-controller: "bioService"
+    get:
+      tags:
+      - "bio"
+      summary: "Get publisher bio details"
+      description: "Get publisher bio details "
+      operationId: "getPublisherBio"
+      security: 
+        - UserSecurity: [] 
+      produces:
+        - "application/json"
+      parameters:  
+      - name: "orgId"
+        in: "path"
+        description: "org id"
+        required: true
+        type: "string"
+      - name: "authorId"
+        in: "path"
+        description: "authorId to get details"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "publisher bio details."
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/bios"
+        default:
+          description: "Unexpected error"
+      x-swagger-router-controller: "bioService" 
+  /user/bios/{authorId}:
+   get:
+      tags:
+      - "bio"
+      summary: "Get publisher for user"
+      description: "Get publisher for user"
+      operationId: "getPublisherBYUser"   
+      
+      produces:
+      - "application/json"
+      parameters:
+      - name: "user_access"
+        in: "header"
+        description: "user_access"
+        required: true
+        type: "string"
+      - name: "authorId"
+        in: "path"
+        description: "authorId"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "A list of bios."
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/bios"
+        default:
+          description: "Unexpected error"
+      x-swagger-router-controller: "bioService"
+
+  /swagger:
+    x-swagger-pipe: swagger_raw
+definitions:  
+  bios:
+    type: "object" 

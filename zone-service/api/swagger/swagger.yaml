@@ -1,0 +1,362 @@
+swagger: "2.0"
+info:
+  description: "zone services"
+  version: "1.0.0"
+  title: "zone  services"
+  contact:
+    name:  zoner API Support
+    email: umar@zoner.com
+basePath: "/v2/components/zones-service"
+schemes:
+- "http"
+securityDefinitions:
+  UserSecurity:
+    type: apiKey
+    in: header
+    name: Authorization
+
+paths:
+  /city/{cityId}/zones:
+    get:
+      tags:
+      - "public zones"
+      summary: "Get all zones"
+      description: "Get all zones"
+      operationId: "getcityzones"   
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cityId"
+        in: "path"
+        description: "cityId"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "A list of zones."
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/zones"
+        default:
+          description: "Unexpected error"
+      x-swagger-router-controller: "zoneService"
+      
+    post:
+      tags:
+      - "owner zones"
+      summary: "Post a zone."
+      description: "user can post a  zone"
+      operationId: "postzone"
+      produces:
+      - "application/json"
+      parameters: 
+      - name: "cityId"
+        in: "path"
+        description: "cityId"
+        required: true
+        type: "string"
+      - name: "user_access"
+        in: "header"
+        description: "user_access"
+        required: true
+        type: "string"
+      - name: "body"
+        in: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/zones"
+      responses:
+        200:
+          description: "zones details"
+          schema:
+            type: "object"
+            properties: {}
+        400:
+          description: "Error creating a new publishers"
+        default:
+          description: "Unexpected error"
+      x-swagger-router-controller: "zoneService"
+  /city/{cityId}/zones/{zoneId}/member:
+    get:
+      tags:
+      - "zoneowner can see"
+      summary: "Get all zones"
+      description: "Get all zones"
+      operationId: "getAllMembers"   
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cityId"
+        in: "path"
+        description: "cityId"
+        required: true
+        type: "string"
+      - name: "zoneId"
+        in: "path"
+        description: "zoneId"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "A list of zones."
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/zones"
+        default:
+          description: "Unexpected error"
+      x-swagger-router-controller: "memberService"
+      
+    post:
+      tags:
+      - "member level"
+      summary: "Post a zone."
+      description: "user can post a  zone"
+      operationId: "createMember"
+      produces:
+      - "application/json"
+      parameters: 
+      - name: "cityId"
+        in: "path"
+        description: "cityId"
+        required: true
+        type: "string"
+      - name: "zoneId"
+        in: "path"
+        description: "zoneId"
+        required: true
+        type: "string"
+      - name: "user_access"
+        in: "header"
+        description: "user_access"
+        required: true
+        type: "string"
+      - name: "body"
+        in: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/zones"
+      responses:
+        200:
+          description: "zones details"
+          schema:
+            type: "object"
+            properties: {}
+        400:
+          description: "Error creating a new publishers"
+        default:
+          description: "Unexpected error"
+      x-swagger-router-controller: "memberService"
+  /city/{cityId}/zones/{zoneId}:
+    put:
+      tags:
+      - "owner zones"
+      summary: "Update a zone."
+      description: "publisher will be able to replay to zone"
+      operationId: "replayzone"
+      security: 
+        - UserSecurity: [] 
+      produces:
+      - "application/json"
+      parameters: 
+      - name: "zoneId"
+        in: "path"
+        description: "zoneId to be updated"
+        required: true
+        type: "string"
+      - name: "cityId"
+        in: "path"
+        description: "linked cityId"
+        required: true
+        type: "string"
+      - name: "body"
+        in: "body"
+        description: "publishers replay zone details that need to be added to the system."
+        required: true
+        schema:
+          $ref: "#/definitions/zones"
+      responses:
+        200:
+          description: "zones details"
+          schema:
+            type: "object"
+            properties: {}
+        400:
+          description: "Error update zones"
+        default:
+          description: "Unexpected error"
+      x-swagger-router-controller: "zoneService"
+    delete:
+      tags:
+      - "admin level zones"
+      summary: "Update a zone."
+      description: "publisher will be able to replay to zone"
+      operationId: "deletezone"
+      security: 
+        - UserSecurity: [] 
+      produces:
+      - "application/json"
+      parameters: 
+      - name: "zoneId"
+        in: "path"
+        description: "zoneId to be updated"
+        required: true
+        type: "string"
+      - name: "cityId"
+        in: "path"
+        description: "linked cityId"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "zones details"
+          schema:
+            type: "object"
+            properties: {}
+        400:
+          description: "Error update zones"
+        default:
+          description: "Unexpected error"
+      x-swagger-router-controller: "zoneService"
+    get:
+      tags:
+      - "public zones"
+      summary: "get a zone."
+      description: "publisher will be able to see"
+      operationId: "getzone"
+      produces:
+      - "application/json"
+      parameters: 
+      - name: "zoneId"
+        in: "path"
+        description: "zoneId to be updated"
+        required: true
+        type: "string"
+      - name: "cityId"
+        in: "path"
+        description: "linked cityId"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "zones details"
+          schema:
+            type: "object"
+            properties: {}
+        400:
+          description: "Error update zones"
+        default:
+          description: "Unexpected error"
+      x-swagger-router-controller: "zoneService"
+  /city/zones/{startfrom}:
+    get:
+      tags:
+      - "admin level zones"
+      summary: "get all a zone for all city."
+      description: "admin will be able to see all zones"
+      operationId: "getcityzonesAll"
+      # security: 
+      #   - UserSecurity: []
+      produces:
+      - "application/json"
+      parameters: 
+      - name: "startfrom"
+        in: "path"
+        description: "startfrom to be updated"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "get all zones to approval"
+          schema:
+            type: "object"
+            properties: {}
+        400:
+          description: "Error update zones"
+        default:
+          description: "Unexpected error"
+      x-swagger-router-controller: "zoneService"
+  /city/{cityId}/zones/{zoneId}/approval:
+    patch:
+      tags:
+      - "admin level zones"
+      summary: "approve or reject a zone."
+      description: "Admin will be able to replay to zone"
+      operationId: "publishzone"
+      # security: 
+      #   - UserSecurity: [] 
+      produces:
+      - "application/json"
+      parameters: 
+      - name: "zoneId"
+        in: "path"
+        description: "zoneId to be updated"
+        required: true
+        type: "string"
+      - name: "cityId"
+        in: "path"
+        description: "linked cityId"
+        required: true
+        type: "string"
+      - name: "body"
+        in: "body"
+        description: "owners replay zone details that need to be added to the system."
+        required: true
+        schema:
+          $ref: "#/definitions/zones"
+      responses:
+        200:
+          description: "zones details"
+          schema:
+            type: "object"
+            properties: {}
+        400:
+          description: "Error update zones"
+        default:
+          description: "Unexpected error"
+      x-swagger-router-controller: "zoneService"
+  /city/{cityId}/zones/{zoneId}/subscription:
+    patch:
+      tags:
+      - "owner level zones"
+      summary: "approve or reject a zone."
+      description: "owner will be able to replay to zone"
+      operationId: "getZoneSubscription"
+      # security: 
+      #   - UserSecurity: [] 
+      produces:
+      - "application/json"
+      parameters: 
+      - name: "zoneId"
+        in: "path"
+        description: "zoneId to be updated"
+        required: true
+        type: "string"
+      - name: "cityId"
+        in: "path"
+        description: "linked cityId"
+        required: true
+        type: "string"
+      - name: "body"
+        in: "body"
+        description: "owners replay zone details that need to be added to the system."
+        required: true
+        schema:
+          $ref: "#/definitions/zones"
+      responses:
+        200:
+          description: "zones details"
+          schema:
+            type: "object"
+            properties: {}
+        400:
+          description: "Error update zones"
+        default:
+          description: "Unexpected error"
+      x-swagger-router-controller: "zoneService"
+  /swagger:
+    x-swagger-pipe: swagger_raw
+definitions:  
+  zones:
+    type: "object" 

@@ -1,0 +1,85 @@
+swagger: "2.0"
+info:
+  version: "1.0"
+  title: TL Storage Service
+# during dev, should point to your local machine
+host: localhost:10010
+# basePath prefixes all resource paths 
+basePath: "/v2/components/storage-service"
+schemes:
+  # tip: remove http to make production-grade
+  - http
+  - https
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+securityDefinitions:
+  UserSecurity:
+    type: apiKey
+    in: header
+    name: Authorization
+paths:
+  /swagger:
+    x-swagger-pipe: swagger_raw
+  /org/{orgId}/user/{userId}/type/{providerType}/par/{accessType}/name/{objectName}:
+    get:
+      tags:
+      - "createPAR"
+      summary: "createPAR"
+      description: "createPAR"
+      operationId: "createPAR"
+      security: 
+        - UserSecurity: []  
+      parameters:
+      - in: path
+        name: providerType
+        description: the provider to which upload has to be done.
+        required: true
+        type: "string"
+        enum:
+        - 'oracle'
+        - 'azure'
+        - 'aws'
+        - 'heroku'
+        - 'digitalocean'
+      - in: path
+        name: orgId
+        description: orgId of the user.
+        required: true
+        type: "string"
+      - in: path
+        name: userId
+        description: userId of the user.
+        required: true
+        type: "string"  
+      - in: path
+        name: accessType
+        description: accessType for the par request read or write.
+        required: true
+        type: "string"  
+      - in: path
+        name: objectName
+        description: objectName for the par request.
+        required: true
+        type: "string"          
+      responses:
+        200:
+          description: "Uploaded File URL"
+          schema:
+            type: "object"
+            properties: {}
+        400:
+          description: "Error uploading the file"
+        default:
+          description: "Unexpected error"
+      x-swagger-router-controller: "Upload_Service"
+definitions:
+  ErrorResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string

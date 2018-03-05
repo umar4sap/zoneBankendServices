@@ -1,0 +1,21 @@
+#docker compose file
+version: '2'
+services:
+  labs_db:
+    image: rethinkdb:latest
+    ports:  
+      - "8080:8080"
+      - "28015:28015"
+      - "29015:29015"
+  publisher:
+    build: .
+    environment:
+      - AUTH0_CLIENT_SECRET=U1IsTsCTCH7U74r-fmzhTtceblrTkMo6zq858pQwvRZcCRDb0HO7y5JyeKmQgIqM
+      - AUTH0_CLIENT_ID=Cn5kYtUEnl7AenbR590uvCvwG3RcFqAM 
+      - PORT=10011
+   
+    ports:
+      - "10010:10011"
+    command:  node app
+    depends_on:
+      - labs_db

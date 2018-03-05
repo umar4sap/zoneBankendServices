@@ -1,0 +1,14 @@
+re-dev:
+  image: 'REPO/REPO-NAME:TAG'
+  ports:
+    - '10010:10010'
+  roles:
+    - global
+re-lb-dev:
+  image: 'dockercloud/haproxy:latest'
+  links:
+    - re-dev
+  ports:
+    - '80:80'
+  roles:
+    - global
