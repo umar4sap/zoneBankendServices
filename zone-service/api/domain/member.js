@@ -152,6 +152,7 @@ member.prototype.getOnemember = (traceId, cityId,memberId, cb) => {
     rdb.table("members").filter({ cityId: cityId,memberId:memberId,memberStatus:"active" }).run().then(function (result) {
 
         if (result.length > 0) {
+          var baseData=result[0].memberPhoto
                         var resObj = { "status": "200", "data": result }
                         cb(null, resObj);
                 

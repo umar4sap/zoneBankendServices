@@ -18,7 +18,8 @@ function zoneMetadata(data, userId, tenantId,orgId) {
     zoneMetadata.prototype.zone.zoneAddress = zonedata.zoneAddress;
     zoneMetadata.prototype.zone.zoneType = zonedata.zoneType;
     zoneMetadata.prototype.zone.zoneSince = zonedata.zoneSince;
-    zoneMetadata.prototype.zone.zoneStatus = "inReview";
+    zoneMetadata.prototype.zone.zoneStatus = "publish";
+    zoneMetadata.prototype.zone.zonePaymentStatus = "intiated";
     zoneMetadata.prototype.zone.zoneTiming = zonedata.zoneTiming;
     zoneMetadata.prototype.zone.zoneEmail = zonedata.zoneEmail;
     zoneMetadata.prototype.zone.aboutZone = zonedata.aboutZone;
@@ -28,7 +29,19 @@ function zoneMetadata(data, userId, tenantId,orgId) {
     zoneMetadata.prototype.zone.primaryContact = zonedata.primaryContact;
     zoneMetadata.prototype.zone.secondaryContact = zonedata.secondaryContact;
     zoneMetadata.prototype.zone.images = zonedata.images;
+    zoneMetadata.prototype.zone.zoneCoverImage = zonedata.zoneCoverImage;
+    zoneMetadata.prototype.zone.logo = zonedata.logo;
     zoneMetadata.prototype.zone.videos = zonedata.videos;
+    zoneMetadata.prototype.zone.zoneMemberActivateMessage = zonedata.zoneMemberActivateMessage;
+    zoneMetadata.prototype.zone.zoneMemberDeactivateMessage = zonedata.zoneMemberDeactivateMessage;
+    zoneMetadata.prototype.zone.zoneMemberPlanExpireMessage = zonedata.zoneMemberPlanExpireMessage;
+    zoneMetadata.prototype.zone.zonefreeTrailPerMonth = zonedata.zonefreeTrailPerMonth;
+    zoneMetadata.prototype.zone.zonefreeTrailPerDay = zonedata.zonefreeTrailPerDay;
+    zoneMetadata.prototype.zone.zoneCurrentPlans = zonedata.zoneCurrentPlans;
+    zoneMetadata.prototype.zone.zoneCurrentDiscounts = zonedata.zoneCurrentDiscounts;
+    zoneMetadata.prototype.zone.zoneSubcriptionDetails = zonedata.zoneSubcriptionDetails;
+    zoneMetadata.prototype.zone.zoneTrainers = zonedata.zoneTrainers;
+
    
     
 }

@@ -121,7 +121,7 @@ zone.prototype.findAllzonesForAllcity = (traceId, startfrom,cb) => {
 
 // Getpublished zone by cityId
 zone.prototype.cityzones = (traceId, cityId, cb) => {
-    rdb.table("zones").filter({ cityId: cityId,"zoneStatus":"active"}).run().then(function (result) {
+    rdb.table("zones").filter({ cityId: cityId,"zoneStatus":"publish"}).run().then(function (result) {
 
         if (result.length > 0) {
                         var resObj = { "status": "200", "data": result }
