@@ -141,7 +141,7 @@ zone.prototype.cityzones = (traceId, cityId, cb) => {
 
 // Getpublished zone by cityId and zoneId
 zone.prototype.getOnezone = (traceId, cityId,zoneId, cb) => {
-    rdb.table("zones").filter({ cityId: cityId,zoneId:zoneId,zoneStatus:"active" }).run().then(function (result) {
+    rdb.table("zones").filter({ cityId: cityId,zoneId:zoneId,zoneStatus:"publish" }).run().then(function (result) {
 
         if (result.length > 0) {
                         var resObj = { "status": "200", "data": result }

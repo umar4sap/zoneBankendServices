@@ -1,0 +1,179 @@
+swagger: "2.0"
+info:
+  description: "connection services API"
+  version: "1.0"
+  title: "TL trainer services API"
+basePath: "/v2/components/trainer-service"
+schemes:
+- "http"
+# format of bodies a client can send (Content-Type)
+securityDefinitions:
+  UserSecurity:
+    type: apiKey
+    in: header
+    name: Authorization
+paths:  
+  /org/{orgId}/trainers:
+    get:
+      tags:
+      - "trainers "
+      summary: "Get all trainers"
+      description: "Get all trainers"
+      operationId: "getAlltrainers"
+      security: 
+        - UserSecurity: []
+      produces:
+      - "application/json"
+      parameters:
+      - name: "orgId"
+        in: "path"
+        description: "org id"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "A list of trainers."
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/trainers"
+        default:
+          description: "Unexpected error"
+      x-swagger-router-controller: "trainerService"
+    post:
+      tags:
+      - "trainers"
+      summary: "Creates a trainer."
+      description: "Creates a trainer."
+      operationId: "createtrainer"
+      security: 
+        - UserSecurity: [] 
+      produces:
+      - "application/json"
+      parameters:    
+      - name: "body"
+        in: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/trainers"
+      - name: "orgId"
+        in: "path"
+        description: "org id"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "trainer Details"
+          schema:
+            type: "object"
+            properties: {}
+        400:
+          description: "Error creating a new trainer"
+        default:
+          description: "Unexpected error"
+    
+      x-swagger-router-controller: "trainerService"
+  /org/{orgId}/trainers/{trainerId}:
+    get:
+      tags:
+      - "trainer by trainer id"
+      summary: "Get trainer"
+      description: "Get trainer by trainerId"
+      operationId: "gettrainerById"
+      security: 
+        - UserSecurity: []
+      parameters:
+        - name: trainerId
+          in: path
+          description: trainerId
+          required: true
+          type: string
+        - name: "orgId"
+          in: "path"
+          description: "org id"
+          required: true
+          type: "string"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "A json of type for given trainerId."
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/trainers"
+        default:
+          description: "Unexpected error"
+      x-swagger-router-controller: "trainerService" 
+    delete:
+      tags:
+      - "Delete type by trainer id"
+      summary: "delete trainer"
+      description: "delete trainer by trainerId"
+      operationId: "deletetrainer"
+      security: 
+        - UserSecurity: []
+      parameters:
+        - name: trainerId
+          in: path
+          description: trainerId
+          required: true
+          type: string
+        - name: "orgId"
+          in: "path"
+          description: "org id"
+          required: true
+          type: "string"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "deleted trainer."
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/trainers"
+        default:
+          description: "Unexpected error"
+      x-swagger-router-controller: "trainerService"     
+    put:
+      tags:
+      - "update trainer by trainer id"
+      summary: "updates a trainer."
+      description: "updates a trainer."
+      operationId: "updatetrainer"
+      security: 
+        - UserSecurity: []
+      parameters:
+        - name: trainerId
+          in: path
+          description: trainerId
+          required: true
+          type: string 
+        - name: "body"
+          in: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/trainers"
+        - name: "orgId"
+          in: "path"
+          description: "org id"
+          required: true
+          type: "string"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "update trainer."
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/trainers"
+        default:
+          description: "Unexpected error"
+      x-swagger-router-controller: "trainerService" 
+  /swagger:
+    x-swagger-pipe: swagger_raw
+definitions:  
+  trainers:
+    type: "object"    
