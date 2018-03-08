@@ -13,9 +13,9 @@ var log = new Logger.createLogger({
     serializers: { req: Logger.stdSerializers.req }
 });
 
-function createPAR(orgId, userId, token, objectType, objectName, traceId) {
+function createPAR(zoneId, userId, token, objectType, objectName, traceId) {
     var defer = Q.defer();
-    StorageClient.createReadPAR(orgId, userId, token, objectType, objectName, traceId, function(err, result) {
+    StorageClient.createReadPAR(zoneId, userId, token, objectType, objectName, traceId, function(err, result) {
         if (err) {
             log.error("TraceId : %s, Error : %s", traceId, JSON.stringify(err));
             defer.reject;
@@ -24,14 +24,14 @@ function createPAR(orgId, userId, token, objectType, objectName, traceId) {
     });
     return defer.promise;
 }
-var getAllUrl = function(orgId, userId, tokenId, labdata, traceId, cb) {
+var getAllUrl = function(zoneId, userId, tokenId, labdata, traceId, cb) {
     console.log(labdata)
     var d = Q.defer();
     var promise = storageType.map(function(item) {
         var defer = Q.defer();
         var promises = labdata[0][item].map(function(image) {
             if (image.urlType == "dynamic") {
-                return createPAR(orgId, userId, tokenId, item, image.id, traceId);
+                return createPAR(zoneId, userId, tokenId, item, image.id, traceId);
             }
         });
         Q.all(promises)
@@ -57,14 +57,14 @@ var getAllUrl = function(orgId, userId, tokenId, labdata, traceId, cb) {
             });
 }
 
-var getIconsAndBanner = function(orgId, userId, tokenId, labdata, traceId, cb) {
+var getIconsAndBanner = function(zoneId, userId, tokenId, labdata, traceId, cb) {
 
     var d = Q.defer();
     var promise = storageType.map(function(item) {
         var defer = Q.defer();
         var promises = labdata[item].map(function(image) {
             if (image.urlType == "dynamic") {
-                return createPAR(orgId, userId, tokenId, item, image.id, traceId);
+                return createPAR(zoneId, userId, tokenId, item, image.id, traceId);
             }
         });
         Q.all(promises)
@@ -89,13 +89,13 @@ var getIconsAndBanner = function(orgId, userId, tokenId, labdata, traceId, cb) {
                 cb(null, data);
             });
 }
-var getIconUrl = function(orgId, userId, tokenId, demolabdata, traceId, cb) {
+var getIconUrl = function(zoneId, userId, tokenId, demolabdata, traceId, cb) {
     return new Promise(function(resolve, reject) {
         console.log("demolabdata.logo===>", demolabdata[0].logo)
         let labs = [];
         var promises = demolabdata[0].logo.map(function(item) {
             if (item.urlType == 'dynamic')
-                return createPAR(orgId, userId, tokenId, "logo", item.id, traceId);
+                return createPAR(zoneId, userId, tokenId, "logo", item.id, traceId);
         });
         Q.all(promises)
             .then(function(data) {

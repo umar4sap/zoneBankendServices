@@ -62,32 +62,15 @@ var config = {
         else {
           var user = req.user.sub.split("|");
           req.userInfo = user;
-          
-          if(validateOrganization(req)) {
               return cb(null);  
-          }else{
-            return cb(new Error('Access denied - User does not have access to this organization'));
-          }
+          
         }
       });
     }
   }
 };
 
-function validateOrganization(req) {
-  var orgs = [];
-  orgs = req.user["https://sysgain.newgen.com/app_metadata"].permissions.orgs;
-  var data = {};
-  _.each(orgs, function(item){
-    if(_.isEmpty(data)){
-      data = _.find(item, function(o) 
-            {
-              return Object.keys(item)[0] === req.swagger.params.orgId.value;
-            });
-    }
-  });
-  return data;
-}
+
 dbUtils.initDB();
 
 SwaggerRestify.create(config, function(err, swaggerRestify) {

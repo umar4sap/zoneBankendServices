@@ -1,15 +1,17 @@
+//import { request } from '../../../../../../Library/Caches/typescript/2.6/node_modules/@types/spdy';
+
 'use strict';
 var Q = require('q');
 var _ = require('lodash'),
     dbconfig = require('../../config/db'),
     dbUtils = require('../helpers/db/db'),
-    trainerMetadata = require('../helpers/transformer/trainerMetadata'),
+    TrainerMetadata = require('../helpers/transformer/trainerMetadata'),
     AuthClient = require('../helpers/client/auth0-service-client'),
     storage = require("../domain/storage"),
     Logger = require('bunyan');
 
 var log = new Logger.createLogger({
-    name: 'qloudable-training-labs',
+    name: 'test',
     serializers: { req: Logger.stdSerializers.req }
 });
 var rdb = require('rethinkdbdash')({
@@ -43,9 +45,9 @@ trainer.prototype.set = function(name, value) {
 /**
  * save trainer details
  */
-trainer.prototype.save = (tokenId, userId, traceId, tenantId, orgId, cb) => {
-    var trainerMetadata = new trainerMetadata(trainer.prototype.data, userId, tenantId, orgId).getData();
-    rdb.table("trainers").filter({ "name": trainerMetadata.name, "orgId": orgId }).count().run().then(function(result) {
+trainer.prototype.save = (tokenId, userId, traceId, tenantId, zoneId, cb) => {
+    var trainerMetadata = new TrainerMetadata(trainer.prototype.data, userId, tenantId, zoneId).getData();
+    rdb.table("trainers").filter({ "name": trainerMetadata.name, "zoneId": zoneId }).count().run().then(function(result) {
         if (result) {
             cb(null, { "message": "trainer Name exist" });
         } else {
@@ -66,31 +68,24 @@ trainer.prototype.save = (tokenId, userId, traceId, tenantId, orgId, cb) => {
 /**
  * get all trainers list
  */
-trainer.prototype.findAll = (traceId, userId, tenantId, skip, limit, orgId, cb) => {
+trainer.prototype.findAll = (traceId, userId, tenantId, skip, limit, zoneId, cb) => {
     var response = {
         message: "Cannot Get all trainers.",
         statusCode: 404,
         errorCode: "code1"
     }
     rdb.table("trainers")
-        .filter({ 'orgId': orgId })
+        .filter({ 'zoneId': zoneId })
         .orderBy('trainerId')
         .run().then(function(result) {
             if (result.length > 0) {
-                AuthClient.getAuthToken("sysgain", traceId)
-                    .then(function(data) {
-                        let token = data.replace(/["']/g, "");
-                        storage.getIconUrl("sysgain", "Sygain User", token, result, traceId, function(err, response) {
-                            if (err) {
-                                log.error("TraceId : %s, Error : %s", traceId, JSON.stringify(err));
-                            } else {
-                                var resObj = { "status": "200", "data": response }
+               
+                           
+                                var resObj = { "status": "200", "data": result }
                                 cb(null, resObj);
-                            }
-                        });
-                    });
-            } else {
-                cb(null, result);
+            }else{
+                var resObj = { "status": "200", "data": result }
+                cb(null, resObj);
             }
         }).catch(function(err) {
             log.error("TraceId : %s, Error : %s", traceId, JSON.stringify(err));
@@ -101,31 +96,22 @@ trainer.prototype.findAll = (traceId, userId, tenantId, skip, limit, orgId, cb) 
 /**
  * get trainer details by trainerId
  */
-trainer.prototype.findtrainerById = (traceId, trainerId, orgId, cb) => {
+trainer.prototype.findtrainerById = (traceId, trainerId, zoneId, cb) => {
     var response = {
         message: "Cannot Get trainer by trainer Id" + trainerId,
         statusCode: 404,
         errorCode: "code1"
     }
     rdb.table("trainers")
-        .filter({ 'trainerId': trainerId, 'orgId': orgId })
+        .filter({ 'trainerId': trainerId, 'zoneId': zoneId })
         .run()
         .then(function(result) {
             if (result.length > 0) {
-                AuthClient.getAuthToken("sysgain", traceId)
-                    .then(function(data) {
-                        let token = data.replace(/["']/g, "");
-                        storage.getIconUrl("sysgain", "Sygain User", token, result, traceId, function(err, response) {
-                            if (err) {
-                                log.error("TraceId : %s, Error : %s", traceId, JSON.stringify(err));
-                            } else {
-                                var resObj = { "status": "200", "data": response }
-                                cb(null, resObj);
-                            }
-                        });
-                    });
-            } else {
-                cb(null, result);
+                var resObj = { "status": "200", "data": result }
+                cb(null, resObj);
+            }else{
+                var resObj = { "status": "200", "data": result }
+                cb(null, resObj);
             }
         }).catch(function(err) {
             log.error("TraceId : %s, Error : %s", traceId, JSON.stringify(err));
@@ -136,10 +122,10 @@ trainer.prototype.findtrainerById = (traceId, trainerId, orgId, cb) => {
 /**
  * update trainer details
  */
-trainer.prototype.updatetrainer = (tokenId, userId, traceId, trainerId, orgId, cb) => {
-    var trainerMetadata = new trainerMetadata(trainer.prototype.data, userId).getData();
+trainer.prototype.updatetrainer = (tokenId, userId, traceId, trainerId, zoneId, cb) => {
+    var trainerMetadata = new TrainerMetadata(trainer.prototype.data, userId).getData();
     trainerMetadata.updatedDTS = new Date();
-    rdb.table("trainers").filter({ 'trainerId': trainerId, 'orgId': orgId })
+    rdb.table("trainers").filter({ 'trainerId': trainerId, 'zoneId': zoneId })
         .update(trainerMetadata).run().then(function(result) {
             cb(null, result);
         }).catch(function(err) {
@@ -151,14 +137,14 @@ trainer.prototype.updatetrainer = (tokenId, userId, traceId, trainerId, orgId, c
 /**
  * delete trainer details
  */
-trainer.prototype.deletetrainer = (traceId, trainerId, orgId, cb) => {
+trainer.prototype.deletetrainer = (traceId, trainerId, zoneId, cb) => {
     var response = {
         message: "Cannot delete trainer by trainerId" + trainerId,
         statusCode: 404,
         errorCode: "code1"
     }
     rdb.table("trainers")
-        .filter({ 'trainerId': trainerId, 'orgId': orgId })
+        .filter({ 'trainerId': trainerId, 'zoneId': zoneId })
         .delete({ "returnChanges": true })
         .run()
         .then(function(result) {
@@ -196,3 +182,8 @@ trainer.prototype.deletetrainer = (traceId, trainerId, orgId, cb) => {
 }
 
 module.exports = trainer;
+
+
+
+
+

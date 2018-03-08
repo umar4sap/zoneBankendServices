@@ -1,7 +1,7 @@
 #docker compose file
 version: '2'
 services:
-  labs_db:
+  zone_db:
     image: rethinkdb:latest
     ports:  
       - "8080:8080"
@@ -10,12 +10,12 @@ services:
   publisher:
     build: .
     environment:
-      - AUTH0_CLIENT_SECRET=U1IsTsCTCH7U74r-fmzhTtceblrTkMo6zq858pQwvRZcCRDb0HO7y5JyeKmQgIqM
-      - AUTH0_CLIENT_ID=Cn5kYtUEnl7AenbR590uvCvwG3RcFqAM 
+      - AUTH0_CLIENT_SECRET=-QZB4_uxwVfzgDieFPdzt_ItmN74bplBHYLeE-v049nakX1ada3N2xziJeOMNthF
+      - AUTH0_CLIENT_ID=cO02S01qm4vmAp2jhUtuLI4iAfQgXNx4
       - PORT=8089
    
     ports:
-      - "10012:8089"
+      - "9004:9004"
     command:  node app
     depends_on:
-      - labs_db
+      - zone_db

@@ -9,9 +9,9 @@ var log = new Logger.createLogger({
 });
 var _ = require('lodash');
 
-var sysgainURL = 'https://sysgain.newgen.com/app_metadata';
+var URL = 'https://lookatgym.com/roles';
 var admin = 'admin';
-var publisher = 'publisher';
+var publisher = 'owner';
 module.exports = {
     createtrainer: createtrainer,
     getAlltrainers: getAlltrainers,
@@ -22,13 +22,13 @@ module.exports = {
 /**
  * Get logged in user permission details.
  * @param {*} currentPermissionsOrgs 
- * @param {*} orgId 
+ * @param {*} zoneId 
  * @param {*} cb 
  */
-function currentUserType(currentPermissionsOrgs, orgId, cb) {
-    _.each(currentPermissionsOrgs, function(org, key) {
-        if (org[orgId]) {
-            cb(org[orgId].teams[0].role)
+function currentUserType(currentPermissionsOrgs, zoneId, cb) {
+    _.each(currentPermissionsOrgs, function(zone, key) {
+        if (zone[zoneId]) {
+            cb(zone[zoneId].teams[0].role)
         }
     })
 }
@@ -42,32 +42,25 @@ function currentUserType(currentPermissionsOrgs, orgId, cb) {
  * @param {*} logo 
  */
 function createtrainer(req, res) {
-    var orgId = req.swagger.params.orgId.value;
+    var zoneId = req.swagger.params.zoneId.value;
     var tokenId = req.headers.authorization;
     var userId = req.user.sub.split("|")[1];
-    var traceId = req.headers[process.env.TRACE_VARIABLE];
+    var traceId = "test";
     var tenantId = req.user.aud;
-    var currentPermissionsOrgs = req.user[sysgainURL].permissions.orgs;
-    var userType;
-    currentUserType(currentPermissionsOrgs, orgId, function(data) {
-        userType = data;
-    })
-    if (userType == admin) {
+    var userType= req.user[URL].userType;
+   
+    
+    if (userType == "user") {
         var check = validator.isObject()
             .withRequired('name', validator.isString({ message: "Please enter trainer name" }))
             .withOptional('description', validator.isString({ message: "Please enter trainer description" }))
-            .withRequired('assignedStreamId', validator.isString({ message: "Please enter trainer assignedStreamId" }))
-            .withOptional('logo', validator.isAnyObject({ message: "Please enter trainer log" }))
+            .withRequired('deparment', validator.isString({ message: "Please enter trainer deparment" }))
+            .withOptional('photo', validator.isAnyObject({ message: "Please enter trainer photo " }))
         var toValidate = req.swagger.params.body.value;
         validator.run(check, toValidate, function(errorCount, errors) {
-            if (!Array.isArray(req.swagger.params.body.value.logo)) {
-                var logo = req.swagger.params.body.value.logo;
-                req.swagger.params.body.value.logo = [];
-                req.swagger.params.body.value.logo.push(logo);
-            }
             if (errorCount == 0) {
                 //console.log('before save....')
-                (new trainer(req.swagger.params.body.value)).save(tokenId, userId, traceId, tenantId, orgId,
+                (new trainer(req.swagger.params.body.value)).save(tokenId, userId, traceId, tenantId, zoneId,
                     function(err, content) {
                         if (err) {
                             // res.writeHead(err.statusCode, { 'Content-trainer': 'application/json' });
@@ -102,7 +95,7 @@ function createtrainer(req, res) {
  * @param {*} res 
  */
 function getAlltrainers(req, res) {
-    var orgId = req.swagger.params.orgId.value;
+    var zoneId = req.swagger.params.zoneId.value;
     var tokenId = req.headers.authorization;
     var userId = req.user.sub.split("|")[1];
     var traceId = req.headers[process.env.TRACE_VARIABLE];
@@ -110,7 +103,7 @@ function getAlltrainers(req, res) {
     var limit = req.limit ? req.limit : 10;
     var page = req.page ? req.page : 1
     var skip = (page - 1) * limit;
-    (new trainer()).findAll(traceId, userId, tenantId, skip, limit, orgId,
+    (new trainer()).findAll(traceId, userId, tenantId, skip, limit, zoneId,
         function(err, content) {
             if (err) {
                 var response = { "status": "400", "error": err }
@@ -133,7 +126,7 @@ function getAlltrainers(req, res) {
  * @param {*} trainerId
  */
 function gettrainerById(req, res) {
-    var orgId = req.swagger.params.orgId.value;
+    var zoneId = req.swagger.params.zoneId.value;
     var tokenId = req.headers.authorization;
     var userId = req.user.sub.split("|")[1];
     var traceId = req.headers[process.env.TRACE_VARIABLE];
@@ -143,7 +136,7 @@ function gettrainerById(req, res) {
     console.log(req.swagger.params)
     validator.run(check, { "trainerId": req.swagger.params.trainerId.value }, function(errorCount, errors) {
         if (errorCount == 0) {
-            (new trainer()).findtrainerById(traceId, req.swagger.params.trainerId.value, orgId,
+            (new trainer()).findtrainerById(traceId, req.swagger.params.trainerId.value, zoneId,
                 function(err, content) {
                     if (err) {
                         var response = { "status": "400", "error": err }
@@ -175,22 +168,20 @@ function gettrainerById(req, res) {
  * @param {*} trainerId
  */
 function updatetrainer(req, res) {
-    var orgId = req.swagger.params.orgId.value;
+    var zoneId = req.swagger.params.zoneId.value;
     var tokenId = req.headers.authorization;
     var userId = req.user.sub.split("|")[1];
     var traceId = req.headers[process.env.TRACE_VARIABLE];
     var tenantId = req.user.aud;
-    var currentPermissionsOrgs = req.user[sysgainURL].permissions.orgs;
-    var userType;
-    currentUserType(currentPermissionsOrgs, orgId, function(data) {
-        userType = data;
-    })
-    if (userType == admin) {
+    var userType= req.user[URL].userType;
+    
+
+    if (userType == "user") {
         var check = validator.isObject()
-            .withRequired('name', validator.isString({ message: "Please enter trainer name" }))
-            .withOptional('description', validator.isString({ message: "Please enter trainer description" }))
-            .withRequired('assignedStreamId', validator.isString({ message: "Please enter trainer assignedStreamId" }))
-            .withOptional('logo', validator.isAnyObject({ message: "Please enter trainer log" }))
+           .withRequired('name', validator.isString({ message: "Please enter trainer name" }))
+           .withOptional('description', validator.isString({ message: "Please enter trainer description" }))
+           .withRequired('deparment', validator.isString({ message: "Please enter trainer deparment" }))
+           .withOptional('photo', validator.isAnyObject({ message: "Please enter trainer photo " }))
         var toValidate = req.swagger.params.body.value;
         validator.run(check, toValidate, function(errorCount, errors) {
             if (!Array.isArray(req.swagger.params.body.value.logo)) {
@@ -199,7 +190,7 @@ function updatetrainer(req, res) {
                 req.swagger.params.body.value.logo.push(logo);
             }
             if (errorCount == 0) {
-                (new trainer(req.swagger.params.body.value)).updatetrainer(tokenId, userId, traceId, req.swagger.params.trainerId.value, orgId,
+                (new trainer(req.swagger.params.body.value)).updatetrainer(tokenId, userId, traceId, req.swagger.params.trainerId.value, zoneId,
                     function(err, content) {
                         if (err) {
                             var response = { "status": "400", "error": err }
@@ -231,23 +222,21 @@ function updatetrainer(req, res) {
  * @param {*} trainerId 
  */
 function deletetrainer(req, res) {
-    var orgId = req.swagger.params.orgId.value;
+    var zoneId = req.swagger.params.zoneId.value;
     var tokenId = req.headers.authorization;
     var userId = req.user.sub.split("|")[1];
     var traceId = req.headers[process.env.TRACE_VARIABLE];
     var tenantId = req.user.aud;
-    var currentPermissionsOrgs = req.user[sysgainURL].permissions.orgs;
-    var userType;
-    currentUserType(currentPermissionsOrgs, orgId, function(data) {
-        userType = data;
-    })
-    if (userType == admin) {
+    var userType= req.user[URL].userType;
+    
+   
+    if (userType == "user") {
         var check = validator.isObject()
             .withRequired('trainerId', validator.isString({ message: "Please enter trainerId" }))
 
         validator.run(check, { "trainerId": req.swagger.params.trainerId.value }, function(errorCount, errors) {
             if (errorCount == 0) {
-                (new trainer()).deletetrainer(traceId, req.swagger.params.trainerId.value, orgId,
+                (new trainer()).deletetrainer(traceId, req.swagger.params.trainerId.value, zoneId,
                     function(err, content) {
                         if (err) {
                             // res.writeHead(err.statusCode, { 'Content-trainer': 'application/json' });

@@ -13,7 +13,7 @@ securityDefinitions:
     in: header
     name: Authorization
 paths:  
-  /org/{orgId}/trainers:
+  /zone/{zoneId}/trainers:
     get:
       tags:
       - "trainers "
@@ -25,9 +25,9 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: "orgId"
+      - name: "zoneId"
         in: "path"
-        description: "org id"
+        description: "zone id"
         required: true
         type: "string"
       responses:
@@ -56,9 +56,9 @@ paths:
         required: true
         schema:
           $ref: "#/definitions/trainers"
-      - name: "orgId"
+      - name: "zoneId"
         in: "path"
-        description: "org id"
+        description: "zone id"
         required: true
         type: "string"
       responses:
@@ -73,7 +73,7 @@ paths:
           description: "Unexpected error"
     
       x-swagger-router-controller: "trainerService"
-  /org/{orgId}/trainers/{trainerId}:
+  /zone/{zoneId}/trainers/{trainerId}:
     get:
       tags:
       - "trainer by trainer id"
@@ -88,9 +88,9 @@ paths:
           description: trainerId
           required: true
           type: string
-        - name: "orgId"
+        - name: "zoneId"
           in: "path"
-          description: "org id"
+          description: "zone id"
           required: true
           type: "string"
       produces:
@@ -119,9 +119,9 @@ paths:
           description: trainerId
           required: true
           type: string
-        - name: "orgId"
+        - name: "zoneId"
           in: "path"
-          description: "org id"
+          description: "zone id"
           required: true
           type: "string"
       produces:
@@ -155,9 +155,9 @@ paths:
           required: true
           schema:
             $ref: "#/definitions/trainers"
-        - name: "orgId"
+        - name: "zoneId"
           in: "path"
-          description: "org id"
+          description: "zone id"
           required: true
           type: "string"
       produces:

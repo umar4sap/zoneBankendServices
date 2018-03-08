@@ -11,21 +11,21 @@ var SwaggerRestify = require('swagger-restify-mw'),
     fs = require('fs'),
     _ = require('lodash'),
     log = new Logger.createLogger({
-        name: 'project-service',
+        name: 'trainers-service',
         serializers: { req: Logger.stdSerializers.req }
     });
 
 
 //GLOBALS
 var app = restify.createServer({ log: log });
-var publicKey = fs.readFileSync(__dirname + '/config/sysgain.pem');
+//var publicKey = fs.readFileSync(__dirname + '/config/sysgain.pem');
 
 
-var port = "8089";
+var port = "9004";
 var jwt = jwt({
-    secret: publicKey,
-    //secret: new Buffer(config.auth0.secret, 'base64'),
-    audience: process.env.AUTH0_CLIENT_ID,
+    //secret: publicKey,
+    secret: "-QZB4_uxwVfzgDieFPdzt_ItmN74bplBHYLeE-v049nakX1ada3N2xziJeOMNthF",
+    audience: "cO02S01qm4vmAp2jhUtuLI4iAfQgXNx4",//process.env.AUTH0_CLIENT_ID,
     credentialsRequired: false,
     getToken: function fromHeaderOrQuerystring(req) {
         if (req.headers.authorization) {
@@ -62,31 +62,15 @@ var config = {
                     var user = req.user.sub.split("|");
                     req.userInfo = user;
 
-                    if (validateOrganization(req)) {
                         return cb(null);
-                    } else {
-                        return cb(new Error('Access denied - User does not have access to this organization'));
-                    }
+                    
                 }
             });
         }
     }
 };
 
-function validateOrganization(req) {
-    // console.log('came here')
-    var orgs = [];
-    orgs = req.user["https://sysgain.newgen.com/app_metadata"].permissions.orgs;
-    var data = {};
-    _.each(orgs, function(item) {
-        if (_.isEmpty(data)) {
-            data = _.find(item, function(o) {
-                return Object.keys(item)[0] === req.swagger.params.orgId.value;
-            });
-        }
-    });
-    return data;
-}
+
 dbUtils.initDB();
 
 SwaggerRestify.create(config, function(err, swaggerRestify) {
