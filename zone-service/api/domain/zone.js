@@ -38,7 +38,7 @@ replied.prototype.getData = function () {
 
 
 // create new zone for owner
-zone.prototype.postzone = ( cityId,traceId,cb) => {
+zone.prototype.postzone = ( cityId,traceId,userId,cb) => {
     zone.prototype.data['createdDTS'] = moment.utc().format();
     zone.prototype.data['updatedDTS'] = moment.utc().format();
     var zoneMetadata = new LabMetadata(zone.prototype.data).getData();
@@ -47,6 +47,7 @@ zone.prototype.postzone = ( cityId,traceId,cb) => {
 //local function to insert components
     function insertzone(){
     zoneMetadata.cityId=cityId
+    zoneMetadata.userId=userId
      rdb.table("zones").insert(zoneMetadata).run().then(function (zoneData) {
              var resObj = { "status": "200", "data": { "message": "Your zone is yet to publish"} }
                     
@@ -122,6 +123,25 @@ zone.prototype.findAllzonesForAllcity = (traceId, startfrom,cb) => {
 // Getpublished zone by cityId
 zone.prototype.cityzones = (traceId, cityId, cb) => {
     rdb.table("zones").filter({ cityId: cityId,"zoneStatus":"publish"}).run().then(function (result) {
+
+        if (result.length > 0) {
+                        var resObj = { "status": "200", "data": result }
+                        cb(null, resObj);
+                
+        } else {
+            var resObj = { "status": "200", "data": result }
+            cb(null, resObj);
+        }
+    }).catch(function (err) {
+        log.error("TraceId : %s, Error : %s", traceId, JSON.stringify(err));
+        var resObj = { "status": "404", "error": err }
+        cb(resObj);
+    })
+}
+
+// Getpublished zone by cityId
+zone.prototype.ownerzones = (traceId, userId, cb) => {
+    rdb.table("zones").filter({ userId: userId,"zoneStatus":"publish"}).run().then(function (result) {
 
         if (result.length > 0) {
                         var resObj = { "status": "200", "data": result }

@@ -16,6 +16,27 @@ securityDefinitions:
     name: Authorization
 
 paths:
+  /zones/owners:
+    get:
+      tags:
+      - "public zones"
+      summary: "Get all zones"
+      description: "Get all zones"
+      operationId: "getOwnerZones"   
+      produces:
+      - "application/json"
+      security: 
+        - UserSecurity: []
+      responses:
+        200:
+          description: "A list of zones."
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/zones"
+        default:
+          description: "Unexpected error"
+      x-swagger-router-controller: "zoneService"
   /city/{cityId}/zones:
     get:
       tags:
@@ -50,15 +71,12 @@ paths:
       operationId: "postzone"
       produces:
       - "application/json"
+      security: 
+        - UserSecurity: []
       parameters: 
       - name: "cityId"
         in: "path"
         description: "cityId"
-        required: true
-        type: "string"
-      - name: "user_access"
-        in: "header"
-        description: "user_access"
         required: true
         type: "string"
       - name: "body"

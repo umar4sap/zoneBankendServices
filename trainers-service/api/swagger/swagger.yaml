@@ -19,7 +19,7 @@ paths:
       - "trainers "
       summary: "Get all trainers"
       description: "Get all trainers"
-      operationId: "getAlltrainers"
+      operationId: "getAlltrainersForZone"
       security: 
         - UserSecurity: []
       produces:
@@ -40,6 +40,7 @@ paths:
         default:
           description: "Unexpected error"
       x-swagger-router-controller: "trainerService"
+    
     post:
       tags:
       - "trainers"
@@ -72,6 +73,27 @@ paths:
         default:
           description: "Unexpected error"
     
+      x-swagger-router-controller: "trainerService"
+  /zone/trainers:
+    get:
+      tags:
+      - "trainers "
+      summary: "Get all trainers"
+      description: "Get all trainers"
+      operationId: "getAlltrainers"
+      security: 
+        - UserSecurity: []
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "A list of trainers."
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/trainers"
+        default:
+          description: "Unexpected error"
       x-swagger-router-controller: "trainerService"
   /zone/{zoneId}/trainers/{trainerId}:
     get:

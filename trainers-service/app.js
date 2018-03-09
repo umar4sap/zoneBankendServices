@@ -21,7 +21,7 @@ var app = restify.createServer({ log: log });
 //var publicKey = fs.readFileSync(__dirname + '/config/sysgain.pem');
 
 
-var port = "9004";
+var port = "9005";
 var jwt = jwt({
     //secret: publicKey,
     secret: "-QZB4_uxwVfzgDieFPdzt_ItmN74bplBHYLeE-v049nakX1ada3N2xziJeOMNthF",

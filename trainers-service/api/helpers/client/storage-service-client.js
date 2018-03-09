@@ -10,9 +10,9 @@ name: 'storage-setup',
 serializers: { req: Logger.stdSerializers.req } 
 });
 
-var createReadPAR = function(orgId, userId, tokenId, objectType, objectName, traceId, cb) {
+var createReadPAR = function(zoneId, userId, tokenId, objectType, objectName, traceId, cb) {
    
-var uri = storage_service + basePath + "/org/" + orgId + "/user/" + userId + "/type/oracle/par/ObjectRead/name/" + objectName;
+var uri = storage_service + basePath + "/zone/" + zoneId + "/user/" + userId + "/type/oracle/par/ObjectRead/name/" + objectName;
     request(
     { 
         method: 'GET',
@@ -35,9 +35,9 @@ var uri = storage_service + basePath + "/org/" + orgId + "/user/" + userId + "/t
         cb(e);
     });
 }
-var createNewReadPAR = function(orgId, userId, tokenId, objectType, objectName, traceId, cb) {
+var createNewReadPAR = function(zoneId, userId, tokenId, objectType, objectName, traceId, cb) {
     return new Promise(function(resolve,reject){
-        var uri = storage_service + basePath + "/org/" + orgId + "/user/" + userId + "/type/oracle/par/ObjectRead/name/" + objectName;
+        var uri = storage_service + basePath + "/zone/" + zoneId + "/user/" + userId + "/type/oracle/par/ObjectRead/name/" + objectName;
     request(
     { 
         method: 'GET',

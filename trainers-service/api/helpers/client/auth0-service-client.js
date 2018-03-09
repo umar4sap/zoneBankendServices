@@ -9,9 +9,9 @@ var log = new Logger.createLogger({
     serializers: { req: Logger.stdSerializers.req } 
 });
 
-var getAuthToken = function(orgId,traceId) {
-    console.log("called"+orgId);
-    var uri = auth0_service + basePath + "/org/" + orgId +"/token";
+var getAuthToken = function(zoneId,traceId) {
+    console.log("called"+zoneId);
+    var uri = auth0_service + basePath + "/zone/" + zoneId +"/token";
     return new Promise(function(resolve,reject){ 
         request(
         {  

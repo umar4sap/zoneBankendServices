@@ -12,11 +12,12 @@ var log = new Logger.createLogger({
     name: 'qloudable-training-zones',
     serializers: { req: Logger.stdSerializers.req }
 });
-
+var URL = 'https://lookatgym.com/roles';
 module.exports = {
     postzone: postzone,
     replayzone:replayzone,
     getcityzones:getcityzones,
+    getOwnerZones:getOwnerZones,
     getcityzonesAll:getcityzonesAll, 
     publishzone: publishzone,
     deletezone: deletezone,
@@ -36,11 +37,14 @@ function currentUserType(currentPermissionsOrgs, orgId, cb) {
 
 // create a training zone
 function postzone(req, res) {
-    console.log("create zone api called")
-    var tokenId = req.headers.user_access;
+    var tokenId = req.headers.authorization;
+    var userId = req.user.sub.split("|")[1];
+    var traceId = "test";
+    var tenantId = req.user.aud;
+    var userType= req.user[URL].userType;
     var bodyData = req.swagger.params.body.value;
     var cityId = req.swagger.params.cityId.value;
-    var traceId = process.env.TRACE_VARIABLE|| "traceid";
+   
     var check = validator.isObject()
         .withRequired('zoneName', validator.isString({ message: "zoneName is required" }))
         .withRequired('zoneOwnerName', validator.isString({ message: "zoneOwnerName is required" }))
@@ -81,7 +85,7 @@ function postzone(req, res) {
             res.json(response);
 
         } else {
-            (new zone(bodyData)).postzone(cityId,traceId,
+            (new zone(bodyData)).postzone(cityId,traceId,userId,
                 function (err, content) {
                     console.log('after save...'+content)
                     if (err) {
@@ -223,7 +227,26 @@ function getcityzones(req, res) {
         });
 }
 
-
+//Pull city's all zones and theirs replies
+function getOwnerZones(req, res) {
+    var tokenId = req.headers.authorization;
+    var userId = req.user.sub.split("|")[1];
+    var traceId = "test";
+    var tenantId = req.user.aud;
+    var userType= req.user[URL].userType;
+    var traceId = process.env.TRACE_VARIABLE|| "my test";
+    (new zone()).ownerzones(traceId, userId,
+        function (err, content) {
+            if (err) {
+              
+                res.end(JSON.stringify(err));
+                log.error("TraceId : %s, Error : %s", traceId, JSON.stringify(err));
+            } else if (content) {
+                res.set('Content-Type', 'application/json');
+                res.json(content)
+            }
+        });
+}
 
 
 

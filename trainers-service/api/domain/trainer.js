@@ -47,6 +47,7 @@ trainer.prototype.set = function(name, value) {
  */
 trainer.prototype.save = (tokenId, userId, traceId, tenantId, zoneId, cb) => {
     var trainerMetadata = new TrainerMetadata(trainer.prototype.data, userId, tenantId, zoneId).getData();
+    trainerMetadata.userId=userId;
     rdb.table("trainers").filter({ "name": trainerMetadata.name, "zoneId": zoneId }).count().run().then(function(result) {
         if (result) {
             cb(null, { "message": "trainer Name exist" });
@@ -68,14 +69,14 @@ trainer.prototype.save = (tokenId, userId, traceId, tenantId, zoneId, cb) => {
 /**
  * get all trainers list
  */
-trainer.prototype.findAll = (traceId, userId, tenantId, skip, limit, zoneId, cb) => {
+trainer.prototype.findAll = (traceId, userId, tenantId,  cb) => {
     var response = {
         message: "Cannot Get all trainers.",
         statusCode: 404,
         errorCode: "code1"
     }
     rdb.table("trainers")
-        .filter({ 'zoneId': zoneId })
+        .filter({ 'userId': userId })
         .orderBy('trainerId')
         .run().then(function(result) {
             if (result.length > 0) {

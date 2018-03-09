@@ -15,6 +15,7 @@ var publisher = 'owner';
 module.exports = {
     createtrainer: createtrainer,
     getAlltrainers: getAlltrainers,
+    getAlltrainersForZone: getAlltrainersForZone,
     gettrainerById: gettrainerById,
     deletetrainer: deletetrainer,
     updatetrainer: updatetrainer,
@@ -95,14 +96,32 @@ function createtrainer(req, res) {
  * @param {*} res 
  */
 function getAlltrainers(req, res) {
-    var zoneId = req.swagger.params.zoneId.value;
     var tokenId = req.headers.authorization;
     var userId = req.user.sub.split("|")[1];
-    var traceId = req.headers[process.env.TRACE_VARIABLE];
+    var traceId = "test";
     var tenantId = req.user.aud;
-    var limit = req.limit ? req.limit : 10;
-    var page = req.page ? req.page : 1
-    var skip = (page - 1) * limit;
+    (new trainer()).findAll(traceId, userId, tenantId, 
+        function(err, content) {
+            if (err) {
+                var response = { "status": "400", "error": err }
+                res.json(response);
+                log.error("TraceId : %s, Error : %s", traceId, JSON.stringify(err));
+            } else if (content.data && content.data.length > 0) {
+                var resObj = { "status": "200", "data": content.data }
+                res.json(resObj);
+            } else {
+                var resObj = { "status": "200", "data": { "message": "no trainers found" } }
+                res.json(resObj);
+            }
+        });
+}
+
+
+function getAlltrainersForZone(req, res) {
+    var tokenId = req.headers.authorization;
+    var userId = req.user.sub.split("|")[1];
+    var traceId = "test";
+    var tenantId = req.user.aud;
     (new trainer()).findAll(traceId, userId, tenantId, skip, limit, zoneId,
         function(err, content) {
             if (err) {
