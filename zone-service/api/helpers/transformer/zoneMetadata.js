@@ -38,7 +38,7 @@ function zoneMetadata(data, userId, tenantId,orgId) {
     zoneMetadata.prototype.zone.zonefreeTrailPerMonth = zonedata.zonefreeTrailPerMonth;
     zoneMetadata.prototype.zone.zonefreeTrailPerDay = zonedata.zonefreeTrailPerDay;
     zoneMetadata.prototype.zone.zoneCurrentFacilities = zonedata.zoneCurrentFacilities;
-    zoneMetadata.prototype.zone.zoneCurrentDiscounts = zonedata.zoneCurrentDiscounts;
+    zoneMetadata.prototype.zone.openDays = zonedata.openDays;
     zoneMetadata.prototype.zone.zoneSubcriptionDetails = zonedata.zoneSubcriptionDetails;
     //zoneMetadata.prototype.zone.zoneTrainers = zonedata.zoneTrainers;
     zoneMetadata.prototype.zone.zoneFor = zonedata.zoneFor;
