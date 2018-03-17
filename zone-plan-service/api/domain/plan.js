@@ -5,7 +5,7 @@ var Q = require('q');
 var _ = require('lodash'),
     dbconfig = require('../../config/db'),
     dbUtils = require('../helpers/db/db'),
-    TrainerMetadata = require('../helpers/transformer/trainerMetadata'),
+    PlanMetadata = require('../helpers/transformer/planMetadata'),
     AuthClient = require('../helpers/client/auth0-service-client'),
     storage = require("../domain/storage"),
     Logger = require('bunyan');
@@ -24,37 +24,37 @@ var rdb = require('rethinkdbdash')({
 
 const uuidv4 = require('uuid/v4');
 
-trainer.prototype.data = {}
+plan.prototype.data = {}
 
-function trainer(data) {
-    trainer.prototype.data = data;
+function plan(data) {
+    plan.prototype.data = data;
 }
 
-trainer.prototype.getData = function() {
-    return trainer.prototype.data;
+plan.prototype.getData = function() {
+    return plan.prototype.data;
 }
 
-trainer.prototype.get = function(name) {
+plan.prototype.get = function(name) {
     return this.data[name];
 }
 
-trainer.prototype.set = function(name, value) {
+plan.prototype.set = function(name, value) {
     this.data[name] = value;
 }
 
 /**
- * save trainer details
+ * save plan details
  */
-trainer.prototype.save = (tokenId, userId, traceId, tenantId, zoneId, cb) => {
-    var trainerMetadata = new TrainerMetadata(trainer.prototype.data, userId, tenantId, zoneId).getData();
-    trainerMetadata.userId=userId;
-    rdb.table("trainers").filter({ "name": trainerMetadata.name, "zoneId": zoneId }).count().run().then(function(result) {
+plan.prototype.save = (tokenId, userId, traceId, tenantId, zoneId, cb) => {
+    var planMetadata = new PlanMetadata(plan.prototype.data, userId, tenantId, zoneId).getData();
+    planMetadata.userId=userId;
+    rdb.table("plans").filter({ "planName": planMetadata.planName, "zoneId": zoneId }).count().run().then(function(result) {
         if (result) {
-            cb(null, { "message": "trainer Name exist" });
+            cb(null, { "message": "plan Name exist" });
         } else {
-            trainerMetadata.createdDTS = new Date();
-            rdb.table("trainers").insert(trainerMetadata).run().then(function(trainerMetadata) {
-                cb(null, trainerMetadata);
+            planMetadata.createdDTS = new Date();
+            rdb.table("plans").insert(planMetadata).run().then(function(planMetadata) {
+                cb(null, planMetadata);
             }).catch(function(e) {
                 log.error("TraceId : %s, Error : %s", traceId, JSON.stringify(e));
                 cb(e);
@@ -67,17 +67,17 @@ trainer.prototype.save = (tokenId, userId, traceId, tenantId, zoneId, cb) => {
 }
 
 /**
- * get all trainers list
+ * get all plans list
  */
-trainer.prototype.findAll = (traceId, userId, tenantId,  cb) => {
+plan.prototype.findAll = (traceId, userId, tenantId,  cb) => {
     var response = {
-        message: "Cannot Get all trainers.",
+        message: "Cannot Get all plans.",
         statusCode: 404,
         errorCode: "code1"
     }
-    rdb.table("trainers")
+    rdb.table("plans")
         .filter({ 'userId': userId })
-        .orderBy('trainerId')
+        .orderBy('planId')
         .run().then(function(result) {
             if (result.length > 0) {
                
@@ -94,15 +94,15 @@ trainer.prototype.findAll = (traceId, userId, tenantId,  cb) => {
         });
 }
 
-trainer.prototype.findAllForZone = (traceId, zoneId, cb) => {
+plan.prototype.findAllForZone = (traceId, zoneId, cb) => {
     var response = {
-        message: "Cannot Get all trainers.",
+        message: "Cannot Get all plans.",
         statusCode: 404,
         errorCode: "code1"
     }
-    rdb.table("trainers")
+    rdb.table("plans")
         .filter({ 'zoneId': zoneId })
-        .orderBy('trainerId')
+        .orderBy('planId')
         .run().then(function(result) {
             if (result.length > 0) {
                
@@ -120,16 +120,16 @@ trainer.prototype.findAllForZone = (traceId, zoneId, cb) => {
 }
 
 /**
- * get trainer details by trainerId
+ * get plan details by planId
  */
-trainer.prototype.findtrainerById = (traceId, trainerId, zoneId, cb) => {
+plan.prototype.findplanById = (traceId, planId, zoneId, cb) => {
     var response = {
-        message: "Cannot Get trainer by trainer Id" + trainerId,
+        message: "Cannot Get plan by plan Id" + planId,
         statusCode: 404,
         errorCode: "code1"
     }
-    rdb.table("trainers")
-        .filter({ 'trainerId': trainerId, 'zoneId': zoneId })
+    rdb.table("plans")
+        .filter({ 'planId': planId, 'zoneId': zoneId })
         .run()
         .then(function(result) {
             if (result.length > 0) {
@@ -146,13 +146,13 @@ trainer.prototype.findtrainerById = (traceId, trainerId, zoneId, cb) => {
 }
 
 /**
- * update trainer details
+ * update plan details
  */
-trainer.prototype.updatetrainer = (tokenId, userId, traceId, trainerId, zoneId, cb) => {
-    var trainerMetadata = new TrainerMetadata(trainer.prototype.data, userId).getData();
-    trainerMetadata.updatedDTS = new Date();
-    rdb.table("trainers").filter({ 'trainerId': trainerId, 'zoneId': zoneId })
-        .update(trainerMetadata).run().then(function(result) {
+plan.prototype.updateplan = (tokenId, userId, traceId, planId, zoneId, cb) => {
+    var planMetadata = new PlanMetadata(plan.prototype.data, userId).getData();
+    planMetadata.updatedDTS = new Date();
+    rdb.table("plans").filter({ 'planId': planId, 'zoneId': zoneId })
+        .update(planMetadata).run().then(function(result) {
             cb(null, result);
         }).catch(function(err) {
             log.error("TraceId : %s, Error : %s", traceId, JSON.stringify(err));
@@ -161,16 +161,16 @@ trainer.prototype.updatetrainer = (tokenId, userId, traceId, trainerId, zoneId, 
 }
 
 /**
- * delete trainer details
+ * delete plan details
  */
-trainer.prototype.deletetrainer = (traceId, trainerId, zoneId, cb) => {
+plan.prototype.deleteplan = (traceId, planId, zoneId, cb) => {
     var response = {
-        message: "Cannot delete trainer by trainerId" + trainerId,
+        message: "Cannot delete plan by planId" + planId,
         statusCode: 404,
         errorCode: "code1"
     }
-    rdb.table("trainers")
-        .filter({ 'trainerId': trainerId, 'zoneId': zoneId })
+    rdb.table("plans")
+        .filter({ 'planId': planId, 'zoneId': zoneId })
         .delete({ "returnChanges": true })
         .run()
         .then(function(result) {
@@ -180,9 +180,9 @@ trainer.prototype.deletetrainer = (traceId, trainerId, zoneId, cb) => {
                         .getAll(rdb.args(result.changes['0'].old_val.connectionIds))
                         .update(function(row) {
                             return {
-                                // Get all the trainers, expect the one we want to update
-                                trainers: row('trainers').filter(function(trainer) {
-                                        return trainer('trainerId').ne(trainerId)
+                                // Get all the plans, expect the one we want to update
+                                plans: row('plans').filter(function(plan) {
+                                        return plan('planId').ne(planId)
                                     })
                                     .default([])
                             };
@@ -196,10 +196,10 @@ trainer.prototype.deletetrainer = (traceId, trainerId, zoneId, cb) => {
                             cb(response);
                         });
                 } else {
-                    cb(null, new trainer(result));
+                    cb(null, new plan(result));
                 }
             } else {
-                cb(null, { "message": "trainerId doesnot exist" });
+                cb(null, { "message": "planId doesnot exist" });
             }
         }).catch(function(err) {
             log.error("TraceId : %s, Error : %s", traceId, JSON.stringify(err));
@@ -207,7 +207,7 @@ trainer.prototype.deletetrainer = (traceId, trainerId, zoneId, cb) => {
         });
 }
 
-module.exports = trainer;
+module.exports = plan;
 
 
 
