@@ -6,7 +6,7 @@ module.exports = {
         db: process.env.DB_NAME || "zoneapp",
     },
     tables: [{
-        table: "trainers",
-        id: "trainerId"
+        table: "plans",
+        id: "planId"
     }]
 }

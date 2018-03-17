@@ -1,6 +1,6 @@
 'use strict';
 
-var trainer = require('../domain/trainer'),
+var plan = require('../domain/plan'),
     Logger = require('bunyan');
 var validator = require('node-validator');
 var log = new Logger.createLogger({
@@ -13,12 +13,12 @@ var URL = 'https://lookatgym.com/roles';
 var admin = 'admin';
 var publisher = 'owner';
 module.exports = {
-    createtrainer: createtrainer,
-    getAlltrainers: getAlltrainers,
-    getAlltrainersForZone: getAlltrainersForZone,
-    gettrainerById: gettrainerById,
-    deletetrainer: deletetrainer,
-    updatetrainer: updatetrainer,
+    createplan: createplan,
+    getAllplans: getAllplans,
+    getAllplansForZone: getAllplansForZone,
+    getplanById: getplanById,
+    deleteplan: deleteplan,
+    updateplan: updateplan,
 };
 /**
  * Get logged in user permission details.
@@ -34,7 +34,7 @@ function currentUserType(currentPermissionsOrgs, zoneId, cb) {
     })
 }
 /**
- * create trainer
+ * create plan
  * @param {*} req 
  * @param {*} res
  * @param {*} name
@@ -42,7 +42,7 @@ function currentUserType(currentPermissionsOrgs, zoneId, cb) {
  * @param {*} assignedStreamId
  * @param {*} logo 
  */
-function createtrainer(req, res) {
+function createplan(req, res) {
     var zoneId = req.swagger.params.zoneId.value;
     var tokenId = req.headers.authorization;
     var userId = req.user.sub.split("|")[1];
@@ -53,29 +53,33 @@ function createtrainer(req, res) {
     
     if (userType == "user") {
         var check = validator.isObject()
-            .withRequired('name', validator.isString({ message: "Please enter trainer name" }))
-            .withOptional('description', validator.isString({ message: "Please enter trainer description" }))
-            .withRequired('deparment', validator.isString({ message: "Please enter trainer deparment" }))
-            .withOptional('photo', validator.isAnyObject({ message: "Please enter trainer photo " }))
+            .withRequired('planName', validator.isString({ message: "Please enter Plan Name " }))
+            .withOptional('zoneName', validator.isString({ message: "Please enter zone Name " }))
+            .withRequired('planFee', validator.isNumber({ message: "Please enter Plan Fee" }))
+            .withRequired('aboutPlan', validator.isString({ message: "Please enter aboutPlan" }))
+            .withRequired('planMonth', validator.isNumber({ message: "Please enter plan Month" }))
+            .withRequired('planOffer', validator.isString({ message: "Please enter plan offer" }))
+            .withRequired('offerValidity', validator.isString({ message: "Please enter offer validity" }))
+            
         var toValidate = req.swagger.params.body.value;
         validator.run(check, toValidate, function(errorCount, errors) {
             if (errorCount == 0) {
                 //console.log('before save....')
-                (new trainer(req.swagger.params.body.value)).save(tokenId, userId, traceId, tenantId, zoneId,
+                (new plan(req.swagger.params.body.value)).save(tokenId, userId, traceId, tenantId, zoneId,
                     function(err, content) {
                         if (err) {
-                            // res.writeHead(err.statusCode, { 'Content-trainer': 'application/json' });
+                            // res.writeHead(err.statusCode, { 'Content-plan': 'application/json' });
                             var response = { "status": "400", "error": err }
                             res.json(response);
                             log.error("TraceId : %s, Error : %s", traceId, JSON.stringify(err));
                         } else {
-                            // res.set('Content-trainer', 'application/json');
+                            // res.set('Content-plan', 'application/json');
                             var response = {};
                             response.status = 200;
                             response.data = {};
-                            response.data.message = content.message || "trainer created successfully";
+                            response.data.message = content.message || "plan created successfully";
                             if (content.generated_keys) {
-                                response.data.trainerId = content.generated_keys[0];
+                                response.data.planId = content.generated_keys[0];
                             }
                             res.json(response);
                         }
@@ -91,16 +95,16 @@ function createtrainer(req, res) {
     }
 };
 /**
- * Get all trainers
+ * Get all plans
  * @param {*} req 
  * @param {*} res 
  */
-function getAlltrainers(req, res) {
+function getAllplans(req, res) {
     var tokenId = req.headers.authorization;
     var userId = req.user.sub.split("|")[1];
     var traceId = "test";
     var tenantId = req.user.aud;
-    (new trainer()).findAll(traceId, userId, tenantId, 
+    (new plan()).findAll(traceId, userId, tenantId, 
         function(err, content) {
             if (err) {
                 var response = { "status": "400", "error": err }
@@ -110,18 +114,18 @@ function getAlltrainers(req, res) {
                 var resObj = { "status": "200", "data": content.data }
                 res.json(resObj);
             } else {
-                var resObj = { "status": "200", "data": { "message": "no trainers found" } }
+                var resObj = { "status": "200", "data": { "message": "no plans found" } }
                 res.json(resObj);
             }
         });
 }
 
 
-function getAlltrainersForZone(req, res) {
+function getAllplansForZone(req, res) {
     var zoneId = req.swagger.params.zoneId.value;
     var traceId = "test";
     //var tenantId = req.user.aud;
-    (new trainer()).findAllForZone(traceId,  zoneId,
+    (new plan()).findAllForZone(traceId,  zoneId,
         function(err, content) {
             if (err) {
                 var response = { "status": "400", "error": err }
@@ -131,30 +135,30 @@ function getAlltrainersForZone(req, res) {
                 var resObj = { "status": "200", "data": content.data }
                 res.json(resObj);
             } else {
-                var resObj = { "status": "200", "data": { "message": "no trainers found" } }
+                var resObj = { "status": "200", "data": { "message": "no plans found" } }
                 res.json(resObj);
             }
         });
 }
 
 /**
- * get trainer details by trainerId
+ * get plan details by planId
  * @param {*} req 
  * @param {*} res 
- * @param {*} trainerId
+ * @param {*} planId
  */
-function gettrainerById(req, res) {
+function getplanById(req, res) {
     var zoneId = req.swagger.params.zoneId.value;
     var tokenId = req.headers.authorization;
     var userId = req.user.sub.split("|")[1];
     var traceId = req.headers[process.env.TRACE_VARIABLE];
     var tenantId = req.user.aud;
     var check = validator.isObject()
-        .withRequired('trainerId', validator.isString({ message: "Please enter trainerId" }))
+        .withRequired('planId', validator.isString({ message: "Please enter planId" }))
     console.log(req.swagger.params)
-    validator.run(check, { "trainerId": req.swagger.params.trainerId.value }, function(errorCount, errors) {
+    validator.run(check, { "planId": req.swagger.params.planId.value }, function(errorCount, errors) {
         if (errorCount == 0) {
-            (new trainer()).findtrainerById(traceId, req.swagger.params.trainerId.value, zoneId,
+            (new plan()).findplanById(traceId, req.swagger.params.planId.value, zoneId,
                 function(err, content) {
                     if (err) {
                         var response = { "status": "400", "error": err }
@@ -164,7 +168,7 @@ function gettrainerById(req, res) {
                         var resObj = { "status": "200", "data": content.data }
                         res.json(resObj);
                     } else {
-                        var resObj = { "status": "200", "data": { "message": "trainer details not found" } }
+                        var resObj = { "status": "200", "data": { "message": "plan details not found" } }
                         res.json(resObj);
                     }
                 });
@@ -176,16 +180,16 @@ function gettrainerById(req, res) {
 }
 
 /**
- * update trainer
+ * update plan
  * @param {*} req 
  * @param {*} res
  * @param {*} name
  * @param {*} description
  * @param {*} assignedStreamId
  * @param {*} logo 
- * @param {*} trainerId
+ * @param {*} planId
  */
-function updatetrainer(req, res) {
+function updateplan(req, res) {
     var zoneId = req.swagger.params.zoneId.value;
     var tokenId = req.headers.authorization;
     var userId = req.user.sub.split("|")[1];
@@ -196,10 +200,10 @@ function updatetrainer(req, res) {
 
     if (userType == "user") {
         var check = validator.isObject()
-           .withRequired('name', validator.isString({ message: "Please enter trainer name" }))
-           .withOptional('description', validator.isString({ message: "Please enter trainer description" }))
-           .withRequired('deparment', validator.isString({ message: "Please enter trainer deparment" }))
-           .withOptional('photo', validator.isAnyObject({ message: "Please enter trainer photo " }))
+           .withRequired('name', validator.isString({ message: "Please enter plan name" }))
+           .withOptional('description', validator.isString({ message: "Please enter plan description" }))
+           .withRequired('deparment', validator.isString({ message: "Please enter plan deparment" }))
+           .withOptional('photo', validator.isAnyObject({ message: "Please enter plan photo " }))
         var toValidate = req.swagger.params.body.value;
         validator.run(check, toValidate, function(errorCount, errors) {
             if (!Array.isArray(req.swagger.params.body.value.logo)) {
@@ -208,18 +212,18 @@ function updatetrainer(req, res) {
                 req.swagger.params.body.value.logo.push(logo);
             }
             if (errorCount == 0) {
-                (new trainer(req.swagger.params.body.value)).updatetrainer(tokenId, userId, traceId, req.swagger.params.trainerId.value, zoneId,
+                (new plan(req.swagger.params.body.value)).updateplan(tokenId, userId, traceId, req.swagger.params.planId.value, zoneId,
                     function(err, content) {
                         if (err) {
                             var response = { "status": "400", "error": err }
                             res.json(response);
                             log.error("TraceId : %s, Error : %s", traceId, JSON.stringify(err));
                         }
-                        res.set('Content-trainer', 'application/json');
+                        res.set('Content-plan', 'application/json');
                         var resObj = {};
                         resObj.status = 200;
                         resObj.data = {}
-                        resObj.data.message = content.message || "trainer updated successfully";
+                        resObj.data.message = content.message || "plan updated successfully";
                         res.json(resObj);
                     });
             } else {
@@ -234,12 +238,12 @@ function updatetrainer(req, res) {
 };
 
 /**
- * delete trainer
+ * delete plan
  * @param {*} req 
  * @param {*} res
- * @param {*} trainerId 
+ * @param {*} planId 
  */
-function deletetrainer(req, res) {
+function deleteplan(req, res) {
     var zoneId = req.swagger.params.zoneId.value;
     var tokenId = req.headers.authorization;
     var userId = req.user.sub.split("|")[1];
@@ -250,23 +254,23 @@ function deletetrainer(req, res) {
    
     if (userType == "user") {
         var check = validator.isObject()
-            .withRequired('trainerId', validator.isString({ message: "Please enter trainerId" }))
+            .withRequired('planId', validator.isString({ message: "Please enter planId" }))
 
-        validator.run(check, { "trainerId": req.swagger.params.trainerId.value }, function(errorCount, errors) {
+        validator.run(check, { "planId": req.swagger.params.planId.value }, function(errorCount, errors) {
             if (errorCount == 0) {
-                (new trainer()).deletetrainer(traceId, req.swagger.params.trainerId.value, zoneId,
+                (new plan()).deleteplan(traceId, req.swagger.params.planId.value, zoneId,
                     function(err, content) {
                         if (err) {
-                            // res.writeHead(err.statusCode, { 'Content-trainer': 'application/json' });
+                            // res.writeHead(err.statusCode, { 'Content-plan': 'application/json' });
                             var response = { "status": "400", "error": err }
                             res.json(response);
                             log.error("TraceId : %s, Error : %s", traceId, JSON.stringify(err));
                         } else if (content) {
-                            // res.set('Content-trainer', 'application/json');
+                            // res.set('Content-plan', 'application/json');
                             var resObj = {};
                             resObj.status = 200;
                             resObj.data = {};
-                            resObj.data.message = content.message || "trainer deleted successfully";
+                            resObj.data.message = content.message || "plan deleted successfully";
                             res.json(resObj);
                         }
                     });

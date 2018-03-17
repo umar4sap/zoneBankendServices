@@ -2,8 +2,8 @@ swagger: "2.0"
 info:
   description: "connection services API"
   version: "1.0"
-  title: "TL trainer services API"
-basePath: "/v2/components/trainer-service"
+  title: "TL plan services API"
+basePath: "/v2/components/plan-service"
 schemes:
 - "http"
 # format of bodies a client can send (Content-Type)
@@ -13,13 +13,13 @@ securityDefinitions:
     in: header
     name: Authorization
 paths:  
-  /zone/{zoneId}/trainers:
+  /zone/{zoneId}/plans:
     get:
       tags:
-      - "trainers "
-      summary: "Get all trainers"
-      description: "Get all trainers"
-      operationId: "getAlltrainersForZone"
+      - "plans "
+      summary: "Get all plans"
+      description: "Get all plans"
+      operationId: "getAllplansForZone"
       produces:
       - "application/json"
       parameters:
@@ -30,21 +30,21 @@ paths:
         type: "string"
       responses:
         200:
-          description: "A list of trainers."
+          description: "A list of plans."
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/trainers"
+              $ref: "#/definitions/plans"
         default:
           description: "Unexpected error"
-      x-swagger-router-controller: "trainerService"
+      x-swagger-router-controller: "planService"
     
     post:
       tags:
-      - "trainers"
-      summary: "Creates a trainer."
-      description: "Creates a trainer."
-      operationId: "createtrainer"
+      - "plans"
+      summary: "Creates a plan."
+      description: "Creates a plan."
+      operationId: "createplan"
       security: 
         - UserSecurity: [] 
       produces:
@@ -54,7 +54,7 @@ paths:
         in: "body"
         required: true
         schema:
-          $ref: "#/definitions/trainers"
+          $ref: "#/definitions/plans"
       - name: "zoneId"
         in: "path"
         description: "zone id"
@@ -62,50 +62,50 @@ paths:
         type: "string"
       responses:
         200:
-          description: "trainer Details"
+          description: "plan Details"
           schema:
             type: "object"
             properties: {}
         400:
-          description: "Error creating a new trainer"
+          description: "Error creating a new plan"
         default:
           description: "Unexpected error"
     
-      x-swagger-router-controller: "trainerService"
-  /zone/trainers:
+      x-swagger-router-controller: "planService"
+  /zone/plans:
     get:
       tags:
-      - "trainers "
-      summary: "Get all trainers"
-      description: "Get all trainers"
-      operationId: "getAlltrainers"
+      - "plans "
+      summary: "Get all plans"
+      description: "Get all plans"
+      operationId: "getAllplans"
       security: 
         - UserSecurity: []
       produces:
       - "application/json"
       responses:
         200:
-          description: "A list of trainers."
+          description: "A list of plans."
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/trainers"
+              $ref: "#/definitions/plans"
         default:
           description: "Unexpected error"
-      x-swagger-router-controller: "trainerService"
-  /zone/{zoneId}/trainers/{trainerId}:
+      x-swagger-router-controller: "planService"
+  /zone/{zoneId}/plans/{planId}:
     get:
       tags:
-      - "trainer by trainer id"
-      summary: "Get trainer"
-      description: "Get trainer by trainerId"
-      operationId: "gettrainerById"
+      - "plan by plan id"
+      summary: "Get plan"
+      description: "Get plan by planId"
+      operationId: "getplanById"
       security: 
         - UserSecurity: []
       parameters:
-        - name: trainerId
+        - name: planId
           in: path
-          description: trainerId
+          description: planId
           required: true
           type: string
         - name: "zoneId"
@@ -117,26 +117,26 @@ paths:
       - "application/json"
       responses:
         200:
-          description: "A json of type for given trainerId."
+          description: "A json of type for given planId."
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/trainers"
+              $ref: "#/definitions/plans"
         default:
           description: "Unexpected error"
-      x-swagger-router-controller: "trainerService" 
+      x-swagger-router-controller: "planService" 
     delete:
       tags:
-      - "Delete type by trainer id"
-      summary: "delete trainer"
-      description: "delete trainer by trainerId"
-      operationId: "deletetrainer"
+      - "Delete type by plan id"
+      summary: "delete plan"
+      description: "delete plan by planId"
+      operationId: "deleteplan"
       security: 
         - UserSecurity: []
       parameters:
-        - name: trainerId
+        - name: planId
           in: path
-          description: trainerId
+          description: planId
           required: true
           type: string
         - name: "zoneId"
@@ -148,33 +148,33 @@ paths:
       - "application/json"
       responses:
         200:
-          description: "deleted trainer."
+          description: "deleted plan."
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/trainers"
+              $ref: "#/definitions/plans"
         default:
           description: "Unexpected error"
-      x-swagger-router-controller: "trainerService"     
+      x-swagger-router-controller: "planService"     
     put:
       tags:
-      - "update trainer by trainer id"
-      summary: "updates a trainer."
-      description: "updates a trainer."
-      operationId: "updatetrainer"
+      - "update plan by plan id"
+      summary: "updates a plan."
+      description: "updates a plan."
+      operationId: "updateplan"
       security: 
         - UserSecurity: []
       parameters:
-        - name: trainerId
+        - name: planId
           in: path
-          description: trainerId
+          description: planId
           required: true
           type: string 
         - name: "body"
           in: "body"
           required: true
           schema:
-            $ref: "#/definitions/trainers"
+            $ref: "#/definitions/plans"
         - name: "zoneId"
           in: "path"
           description: "zone id"
@@ -184,16 +184,16 @@ paths:
       - "application/json"
       responses:
         200:
-          description: "update trainer."
+          description: "update plan."
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/trainers"
+              $ref: "#/definitions/plans"
         default:
           description: "Unexpected error"
-      x-swagger-router-controller: "trainerService" 
+      x-swagger-router-controller: "planService" 
   /swagger:
     x-swagger-pipe: swagger_raw
 definitions:  
-  trainers:
+  plans:
     type: "object"    
