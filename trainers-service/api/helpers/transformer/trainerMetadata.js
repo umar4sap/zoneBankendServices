@@ -17,6 +17,7 @@ function trainerMetadata(data, userId, tenantId, zoneId) {
     trainerMetadata.prototype.trainer.description = typedata.description;
     trainerMetadata.prototype.trainer.photo = typedata.photo;
     trainerMetadata.prototype.trainer.deparment = typedata.deparment;
+    trainerMetadata.prototype.trainer.zoneName = typedata.zoneName;
     trainerMetadata.prototype.trainer.createdDTS = typedata.createdDTS;
 
 
