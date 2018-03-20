@@ -54,6 +54,7 @@ function createtrainer(req, res) {
     if (userType == "user") {
         var check = validator.isObject()
             .withRequired('name', validator.isString({ message: "Please enter trainer name" }))
+            .withRequired('zoneName', validator.isString({ message: "Please enter zoneName name" }))
             .withOptional('description', validator.isString({ message: "Please enter trainer description" }))
             .withRequired('deparment', validator.isString({ message: "Please enter trainer deparment" }))
             .withOptional('photo', validator.isAnyObject({ message: "Please enter trainer photo " }))
