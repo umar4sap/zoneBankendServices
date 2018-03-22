@@ -14,11 +14,12 @@ function memberMetadata(data, userId, tenantId,orgId) {
     }
 
     memberMetadata.prototype.member.memberName = memberdata.memberName;
+    memberMetadata.prototype.member.zoneName = memberdata.zoneName;
     memberMetadata.prototype.member.memberAge = memberdata.memberAge;
     memberMetadata.prototype.member.memberCity = memberdata.memberCity;
-    memberMetadata.prototype.member.MemberWeight = memberdata.MemberWeight;
+    memberMetadata.prototype.member.memberWeight = memberdata.memberWeight;
     memberMetadata.prototype.member.userId = memberdata.userId;
-    memberMetadata.prototype.member.memberStatus = "Waiting to confirm";
+    memberMetadata.prototype.member.memberStatus = "inProgress";
     memberMetadata.prototype.member.shiftTiming = memberdata.shiftTiming;
     memberMetadata.prototype.member.memberEmail = memberdata.memberEmail;
     memberMetadata.prototype.member.memberStartDate = memberdata.memberStartDate;
@@ -30,7 +31,8 @@ function memberMetadata(data, userId, tenantId,orgId) {
     memberMetadata.prototype.member.Memberheight = memberdata.Memberheight;
     memberMetadata.prototype.member.memberPhoto = memberdata.memberPhoto;
     memberMetadata.prototype.member.paymentStatus = memberdata.paymentStatus;
-    memberMetadata.prototype.member.planDetails = memberdata.planDetails;
+    memberMetadata.prototype.member.plans = memberdata.plans;
+    memberMetadata.prototype.member.billAmount = memberdata.billAmount;
    
     
 }
