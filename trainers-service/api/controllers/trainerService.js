@@ -58,6 +58,9 @@ function createtrainer(req, res) {
             .withOptional('description', validator.isString({ message: "Please enter trainer description" }))
             .withRequired('deparment', validator.isString({ message: "Please enter trainer deparment" }))
             .withOptional('photo', validator.isAnyObject({ message: "Please enter trainer photo " }))
+            .withOptional('monthlySalary', validator.isNumber({ message: "Please enter monthlySalary" }))
+            .withOptional('joiningDate', validator.isString({ message: "Please enter trainer joiningDate" }))
+            .withOptional('payoutDate', validator.isString({ message: "Please enter trainer payoutDate" }))
         var toValidate = req.swagger.params.body.value;
         validator.run(check, toValidate, function(errorCount, errors) {
             if (errorCount == 0) {
@@ -148,14 +151,11 @@ function gettrainerById(req, res) {
     var zoneId = req.swagger.params.zoneId.value;
     var tokenId = req.headers.authorization;
     var userId = req.user.sub.split("|")[1];
-    var traceId = req.headers[process.env.TRACE_VARIABLE];
+    var traceId = "test";
     var tenantId = req.user.aud;
-    var check = validator.isObject()
-        .withRequired('trainerId', validator.isString({ message: "Please enter trainerId" }))
-    console.log(req.swagger.params)
-    validator.run(check, { "trainerId": req.swagger.params.trainerId.value }, function(errorCount, errors) {
-        if (errorCount == 0) {
-            (new trainer()).findtrainerById(traceId, req.swagger.params.trainerId.value, zoneId,
+  
+    var trainerId = req.swagger.params.trainerId.value;
+  (new trainer()).findtrainerById(traceId, trainerId, zoneId,
                 function(err, content) {
                     if (err) {
                         var response = { "status": "400", "error": err }
@@ -169,11 +169,9 @@ function gettrainerById(req, res) {
                         res.json(resObj);
                     }
                 });
-        } else {
-            var response = { "status": "400", "error": err }
-            res.json(response);
-        }
-    });
+      
+           
+   
 }
 
 /**
@@ -201,6 +199,9 @@ function updatetrainer(req, res) {
            .withOptional('description', validator.isString({ message: "Please enter trainer description" }))
            .withRequired('deparment', validator.isString({ message: "Please enter trainer deparment" }))
            .withOptional('photo', validator.isAnyObject({ message: "Please enter trainer photo " }))
+           .withOptional('monthlySalary', validator.isNumber({ message: "Please enter monthlySalary" }))
+            .withOptional('joiningDate', validator.isString({ message: "Please enter trainer joiningDate" }))
+            .withOptional('payoutDate', validator.isString({ message: "Please enter trainer payoutDate" }))
         var toValidate = req.swagger.params.body.value;
         validator.run(check, toValidate, function(errorCount, errors) {
             if (!Array.isArray(req.swagger.params.body.value.logo)) {
