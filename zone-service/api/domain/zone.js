@@ -122,7 +122,7 @@ zone.prototype.findAllzonesForAllcity = (traceId, startfrom,cb) => {
 
 // Getpublished zone by cityId
 zone.prototype.cityzones = (traceId, cityId, cb) => {
-    rdb.table("zones").filter({ cityId: cityId,"zoneStatus":"publish"}).run().then(function (result) {
+    rdb.table("zones").filter({ cityId: cityId,"zoneStatus":"publish"}).without("images","logo").run().then(function (result) {
 
         if (result.length > 0) {
                         var resObj = { "status": "200", "data": result }
@@ -141,7 +141,7 @@ zone.prototype.cityzones = (traceId, cityId, cb) => {
 
 // Getpublished zone by cityId
 zone.prototype.ownerzones = (traceId, userId, cb) => {
-    rdb.table("zones").filter({ userId: userId,"zoneStatus":"publish"}).run().then(function (result) {
+    rdb.table("zones").filter({ userId: userId,"zoneStatus":"publish"}).without("images","logo").run().then(function (result) {
 
         if (result.length > 0) {
                         var resObj = { "status": "200", "data": result }
