@@ -129,7 +129,23 @@ member.prototype.findAllmembersForAllcity = (traceId, userId,status,cb) => {
         statusCode: 404,
         errorCode: "code1"
     }
-    rdb.table("members").filter({"ownerId":userId,"memberStatus":status}).group("zoneName").run().then(function (result) {
+    rdb.table("members").filter({"ownerId":userId,"memberStatus":status}).group("zoneName","zoneId").run().then(function (result) {
+        var resObj = { "status": "200", "data": result }
+        cb(null, resObj);
+    }).catch(function (err) {
+        log.error("TraceId : %s, Error : %s", traceId, JSON.stringify(err));
+        var resObj = { "status": "404", "error": response }
+        cb(resObj);
+    });
+}
+
+member.prototype.findAllmembersForZone= (traceId, zoneId,status,cb) => {
+    var response = {
+        message: "Cannot Get all member.",
+        statusCode: 404,
+        errorCode: "code1"
+    }
+    rdb.table("members").filter({"zoneId":zoneId,"memberStatus":status}).run().then(function (result) {
         var resObj = { "status": "200", "data": result }
         cb(null, resObj);
     }).catch(function (err) {

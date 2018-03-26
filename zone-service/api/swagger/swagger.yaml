@@ -207,6 +207,39 @@ paths:
         default:
           description: "Unexpected error"
       x-swagger-router-controller: "memberService"
+  /zones/{zoneId}/members/status/{status}:
+    get:
+      tags:
+      - "zoneowner can see"
+      summary: "Get all zones"
+      description: "Get all zones"
+      operationId: "getAllMembersForZone"   
+      produces:
+      - "application/json"
+      security: 
+        - UserSecurity: []
+      parameters:
+      - name: "status"
+        in: "path"
+        description: "status"
+        required: true
+        type: "string"
+      - name: "zoneId"
+        in: "path"
+        description: "zoneId"
+        required: true
+        type: "string"
+
+      responses:
+        200:
+          description: "A list of zones."
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/zones"
+        default:
+          description: "Unexpected error"
+      x-swagger-router-controller: "memberService"
   /city/{cityId}/zones/{zoneId}:
     put:
       tags:

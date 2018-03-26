@@ -17,6 +17,7 @@ module.exports = {
     createMember: createMember,
     getMember:getMember,
     getAllMembers:getAllMembers, 
+    getAllMembersForZone:getAllMembersForZone, 
     activateMember: activateMember,
     deActivateMember: deActivateMember,
     updateMember:updateMember,
@@ -189,6 +190,34 @@ function getAllMembers(req, res) {
     var userType="admin";
     if(userType=="admin"){
     (new member()).findAllmembersForAllcity(traceId, userId,status,
+        function (err, content) {
+            console.log('err', err)
+            if (err) {
+                res.writeHead(err.statusCode, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify(err));
+                log.error("TraceId : %s, Error : %s", traceId, JSON.stringify(err));
+            } else if (content) {
+                res.json(content)
+            }
+        });
+    }else{
+        var resObj = { "status": "400", "data": { "message": "You dont have permission" } }
+        res.set('Content-Type', 'application/json');
+        res.json(resObj);
+    }
+}
+
+function getAllMembersForZone(req, res) {
+    var tokenId = req.headers.authorization;
+    var userId = req.user.sub.split("|")[1]
+    var traceId = "test";
+    var zoneId = req.swagger.params.zoneId.value;
+    var status = req.swagger.params.status.value;
+    var tenantId = req.user.aud;
+    var traceId = process.env.TRACE_VARIABLE|| "traceid";
+    var userType="admin";
+    if(userType=="admin"){
+    (new member()).findAllmembersForZone(traceId, zoneId,status,
         function (err, content) {
             console.log('err', err)
             if (err) {
