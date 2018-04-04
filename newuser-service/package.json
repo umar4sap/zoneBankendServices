@@ -1,0 +1,39 @@
+{
+  "name": "auth0-api",
+  "version": "1.0.0",
+  "description": "Login services using auth0",
+  "main": "app.js",
+  "scripts": {
+    "prestart": "npm install",
+    "start": "node app.js"
+  },
+  "keywords": [
+    "swagger"
+  ],
+  "license": "Unlicense",
+  "private": true,
+  "dependencies": {
+    "auth0": "^2.7.0",
+    "auth0-js": "^8.9.2",
+    "bunyan": "^1.8.12",
+    "connect": "^3.2.0",
+    "cors": "^2.8.4",
+    "dotenv": "^4.0.0",
+    "js-yaml": "^3.3.0",
+    "lodash": "^4.17.5",
+    "cross-spawn": "^5.1.0",
+    "locate-path": "^2.0.0",
+    "moment": "^2.20.1",
+    "node-validator": "^0.1.27",
+    "q": "^1.5.0",
+    "request-promise": "^4.2.1",
+    "restify": "^4.0.2",
+    "restify-jwt": "^0.4.0",
+    "rethink": "^1.4.0",
+    "rethinkdbdash": "^2.3.31",
+    "swagger-restify-mw": "^0.1.0",
+    "underscore": "^1.8.3",
+    "validate": "^3.0.1",
+    "swagger-tools": "^0.10.1"
+  }
+}

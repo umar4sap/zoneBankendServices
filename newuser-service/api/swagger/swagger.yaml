@@ -1,0 +1,212 @@
+swagger: "2.0"
+info:
+  description: "Login services using auth0"
+  version: "1.0"
+  title: "zone new user service"
+basePath: "/v2/components/newuser-service"
+schemes:
+- "http"
+paths:
+  /swagger:
+    x-swagger-pipe: swagger_raw    
+  /user:
+    post:
+      tags:
+      - "User"
+      summary: "Creates a user in Auth0 as a part of publisher onboarding"
+      description: ""
+      operationId: "createUser"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Publisher details that need to be added to the system."
+        required: false
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        200:
+          description: "User details"
+          schema:
+            type: "object"
+            properties: {}
+        400:
+          description: "Error creating a new user"
+        default:
+          description: "Unexpected error"
+      x-swagger-router-controller: "UserService"
+    put:
+      tags:
+      - "User"
+      summary: "updating a user status to blocked/ unblocked"
+      description: "updating a user status to blocked/ unblocked"
+      operationId: "updateUserStatus"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: false
+        schema:
+          $ref: "#/definitions/UserUpdate"
+      responses:
+        200:
+          description: "User details"
+          schema:
+            type: "object"
+            properties: {}
+        404:
+          description: "User not found"
+      x-swagger-router-controller: "UserService"
+  /user/username/{username}:
+    get:
+      tags:
+      - "User"
+      summary: "Checks for an existing user with the same username"
+      description: "Checks for an existing user with the same username"
+      operationId: "searchUserByUsername"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "username"
+        in: "path"
+        description: "username of user that has to be checked"
+        required: true
+        type: "string"
+        format: "string"
+      responses:
+        200:
+          description: "A list of users with username parameter."
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/User"
+        default:
+          description: "Unexpected error"
+      x-swagger-router-controller: "UserService"
+  /user/useremail/{useremail}:
+    get:
+      tags:
+      - "User"
+      summary: "Checks for an existing user with the same email"
+      description: "Checks for an existing user with the same email"
+      operationId: "searchUserByUserEmail"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "useremail"
+        in: "path"
+        description: "email of user that has to be checked"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "A list of users with useremail parameter."
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/User"
+        default:
+          description: "Unexpected error"
+      x-swagger-router-controller: "UserService"
+  /org/{orgId}/token:
+    get:
+      tags:
+      - "User"
+      summary: "Gets user token for internal API's"
+      description: "Gets user token for internal API's"
+      operationId: "getUserToken"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "orgId"
+        in: "path"
+        description: "Organization Id"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "User Token."
+          schema:
+            type: "string"
+        default:
+          description: "Unexpected error"
+      x-swagger-router-controller: "UserService"
+  /user/status/{userstatus}:
+    get:
+      tags:
+      - "User"
+      summary: "returns all the users with a status pending"
+      description: "returns all the users with a status pending"
+      operationId: "getAllPendingUsers"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "userstatus"
+        in: "path"
+        description: "Status values that need to be considered for filter"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "A list of users with pending status."
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/User"
+        400:
+          description: "Invalid Status Value"
+      x-swagger-router-controller: "UserService"
+definitions:
+  User:
+    type: "object"
+    properties:
+      email:
+        type: "string"
+        description: "email of useruser."
+      name:
+        type: "string"
+        description: "Name of user."
+      password:
+        type: "string"
+        description: "Password of user."
+      app_metadata:
+        type: "object"
+        $ref: "#/definitions/app_metadata"
+      user_metadata:
+        type: "object"
+        description: "User metadata"
+      connection:
+        type: "string"
+        description: "Connection type"
+  UserUpdate:
+    type: "object"
+    properties:
+      email:
+        type: "string"
+        description: "email of useruser."
+      updateData:
+        type: "object"
+        description: "user data object."
+  app_metadata:
+    type: "object"
+    properties:
+      organization:
+        type: "string"
+        description: "Organisation of user."
+      Access_Reason:
+        type: "string"
+        description: "Reason for Access."
+      Access_Type:
+        type: "string"
+        description: "Type of Access."
+      status:
+        type: "string"
+        description: "custom status for the user"
+      phone_number:
+        type: "string"
+        description: "Phone number of user."
+      username:
+        type: "string"
+        description: "Name of user."  
