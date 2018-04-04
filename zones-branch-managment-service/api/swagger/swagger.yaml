@@ -1,0 +1,686 @@
+swagger: "2.0"
+info:
+  version: "0.0.4"
+  title: "Branch managment Service"
+basePath: "/v2/components/branch-management-service"
+schemes:
+   - http
+securityDefinitions:
+  UserSecurity:
+    type: apiKey
+    in: header
+    name: Authorization
+  
+consumes:
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+paths:
+  /ownerships/{ownershipId}/branchs/{branchId}/members/{authuseremail}:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: BranchServe
+    post:
+      description: Add users to branch by Auth0 user Id
+      # used as the method name of the controller
+      operationId: addMemberTobranch
+      consumes:
+        - application/json
+        - text/plain
+      produces:
+      - text/plain
+      - application/json
+      security:
+        - UserSecurity: []
+      parameters:
+        - name: ownershipId
+          in: path
+          description: ownership name
+          required: true
+          type: string
+        - name: branchId
+          in: path
+          description: branch name
+          required: true
+          type: string
+        - name: authuseremail
+          in: path
+          description: auth0 authuseremail
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Got success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/msResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  
+    delete:
+      description: Delete users from branch by Auth0 user Id
+      # used as the method name of the controller
+      operationId: removeMemberFrombranch
+      consumes:
+        - application/json
+        - text/plain
+      produces:
+      - text/plain
+      - application/json
+      security:
+        - UserSecurity: []
+      parameters:
+        - name: ownershipId
+          in: path
+          description: ownership name
+          required: true
+          type: string
+        - name: branchId
+          in: path
+          description: branch name
+          required: true
+          type: string
+        - name: authuseremail
+          in: path
+          description: auth0 authuseremail
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Got success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/msResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /ownerships/{ownershipId}/branchs/{branchId}/details/:
+    x-swagger-router-controller: BranchServe
+    get:
+      description: get users for the specific ownership and branch
+      # used as the method name of the controller
+      operationId: getbranchDetails
+      produces:
+      - text/plain
+      - application/json
+      security:
+        - UserSecurity: []
+      parameters:
+        - name: ownershipId
+          in: path
+          description: ownership name
+          required: true
+          type: string
+        - name: branchId
+          in: path
+          description: branch name
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Got success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/msResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /ownerships/{ownershipId}/branchs/{branchId}:
+    x-swagger-router-controller: BranchServe
+    get:
+      description: get branch for an Ownershipanization
+      # used as the method name of the controller
+      operationId: getbranchById
+      consumes:
+        - application/json
+        - text/plain
+      produces:
+      - text/plain
+      - application/json
+      security:
+        - UserSecurity: []
+      parameters:
+        - name: ownershipId
+          in: path
+          description: ownership name
+          required: true
+          type: string
+        - name: branchId
+          in: path
+          description: branch name
+          required: true
+          type: string
+        
+      responses:
+        "200":
+          description: Got success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/msResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+            
+    delete:
+      description: Delete branch from ownership
+      # used as the method name of the controller
+      operationId: deletebranch
+      consumes:
+        - application/json
+        - text/plain
+      produces:
+      - text/plain
+      - application/json
+      security:
+        - UserSecurity: []
+      parameters:
+        - name: ownershipId
+          in: path
+          description: ownership name
+          required: true
+          type: string
+        - name: branchId
+          in: path
+          description: branch name
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Got success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/msResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+            
+    put:
+      description: update branch by branch id
+      summary: update branch by branch id
+      operationId: updatebranch
+      consumes:
+        - application/json
+        - text/plain
+      produces:
+      - text/plain
+      - application/json
+      security:
+        - UserSecurity: []
+      parameters:
+        - name: ownershipId
+          in: path
+          description: ownership name
+          required: true
+          type: string
+        - name: branchId
+          in: path
+          description: branch name
+          required: true
+          type: string
+        - name: body
+          in: body
+          required: false
+          schema:
+            $ref: "#/definitions/updatebranchDef"
+      responses:
+        "200":
+          description: Got success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/msResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+            
+  /ownerships/{ownershipId}/branchs/{branchName}/leave:
+    x-swagger-router-controller: BranchServe
+    delete:
+      description: Leave branch
+      # used as the method name of the controller
+      operationId: leavebranch
+      consumes:
+        - application/json
+        - text/plain
+      produces:
+      - text/plain
+      - application/json
+      security:
+        - UserSecurity: []
+      parameters:
+        - name: ownershipId
+          in: path
+          description: ownership name
+          required: true
+          type: string
+        - name: branchName
+          in: path
+          description: branch name
+          required: true
+          type: string
+        
+      responses:
+        "200":
+          description: Got success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/msResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+            
+  /ownerships/{ownershipId}/branchs/{branchId}/roles:
+    x-swagger-router-controller: BranchServe
+    put:
+      description: save branch roles
+      summary: save branch roles
+      operationId: savebranchRoles
+      consumes:
+        - application/json
+        - text/plain
+      produces:
+      - text/plain
+      - application/json
+      security:
+        - UserSecurity: []
+      parameters:
+        - name: ownershipId
+          in: path
+          description: ownership name
+          required: true
+          type: string
+        - name: branchId
+          in: path
+          description: branch id
+          required: true
+          type: string
+        - name: body
+          in: body
+          required: false
+          schema:
+            $ref: "#/definitions/saveRolesDef"
+      responses:
+        "200":
+          description: Got success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/msResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+            
+  /ownerships/{ownershipId}/branchs:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: BranchServe
+    get:
+      description: all branchs get
+      # used as the method name of the controller
+      operationId: getAllbranchs
+      consumes:
+        - application/json
+        - text/plain
+      produces:
+      - text/plain
+      - application/json
+      security:
+        - UserSecurity: []
+      parameters:
+        - name: ownershipId
+          in: path
+          description: ownership name
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Got success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/msResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    
+    post:
+      description: Create new branch for an ownershipanization
+      summary: Create new branch for an ownershipanization
+      operationId: createbranch
+      consumes:
+        - application/json
+        - text/plain
+      produces:
+      - text/plain
+      - application/json
+      security:
+        - UserSecurity: []
+      parameters:
+        - name: ownershipId
+          in: path
+          description: ownership name
+          required: true
+          type: string
+        - name: body
+          in: body
+          required: false
+          schema:
+           $ref: "#/definitions/branchCreateDef"    
+      responses:
+        "200":
+          description: Got success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/msResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  
+  /ownerships/{ownershipId}/ownerships:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: OwnershipServe
+    get:
+      description: get ownershipanizations of user
+      summary: get ownershipanizations of user
+      operationId: getOwnershipanizations
+      consumes:
+        - application/json
+        - text/plain
+      produces:
+      - text/plain
+      - application/json
+      security:
+        - UserSecurity: []
+      parameters:
+        - name: ownershipId
+          in: path
+          description: ownership name
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Got success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/msResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+            
+  /ownerships:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: OwnershipServe
+    post:
+      description: Create an ownershipanization for user
+      summary: Create an ownershipanization for user
+      operationId: createOwnership
+      security:
+        - UserSecurity: []
+      consumes:
+        - application/json
+        - text/plain
+      produces:
+      - text/plain
+      - application/json
+      parameters:
+        - name: body
+          in: body
+          required: false
+          schema:
+            $ref: "#/definitions/ownershipCreateDef"
+      responses:
+        "200":
+          description: Got success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/msResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /ownerships/{ownershipId}:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: OwnershipServe
+    get:
+      description: Get the user's info
+      # used as the method name of the controller
+      operationId: readOwnership
+      parameters:
+       - name: ownershipId
+         in: path
+         description: Get the details about the ownershipanization. Only the authenticated users with owner/billing admin permission can read the complete details about the ownership. If they are a member, they can read basic details about the ownership 
+         required: true
+         type: string
+      security:
+        - UserSecurity: []
+      responses:
+        "200":
+          description: Get the details about the ownershipanization. Only the authenticated users with owner/billing admin permission can read the complete details about the ownership. If they are a member, they can read basic details about the ownership 
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/msResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    put:
+      description: update the user's info
+      # used as the method name of the controller
+      operationId: updateOwnership
+      parameters:
+       - name: ownershipId
+         in: path
+         description: Update on ownershipanization. Users with owners privilege can update this information.
+         required: true
+         type: string
+       - name: body
+         in: body
+         required: false
+         schema:
+          $ref: "#/definitions/ownershipUpdateDef"
+      security:
+        - UserSecurity: []
+      responses:
+        "200":
+          description: Update on ownershipanization. Users with owners privilege can update this information.
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/msResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+    delete:
+      description: update the user's info
+      # used as the method name of the controller
+      operationId: deleteOwnership
+      parameters:
+       - name: ownershipId
+         in: path
+         description: Delete an ownershipanization. Only users with owner role of the ownershipanization will be able to delete the ownership
+         required: true
+         type: string
+      security:
+        - UserSecurity: []
+      responses:
+        "200":
+          description: got User Token
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/msResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+            
+  /ownerships/check_name/{ownershipName}:
+    x-swagger-router-controller: OwnershipServe
+    get:
+      description: check ownership if already exists
+      # used as the method name of the controller
+      operationId: check_name
+      consumes:
+        - application/json
+        - text/plain
+      produces:
+      - text/plain
+      - application/json
+      security:
+        - UserSecurity: []
+      parameters:
+       - name: ownershipName
+         in: path
+         description: Delete an ownershipanization. Only users with owner role of the ownershipanization will be able to delete the ownership
+         required: true
+         type: string
+      responses:
+        "200":
+          description: Got success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/msResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+            
+  /ownerships/{ownershipId}/permissions:
+    x-swagger-router-controller: BranchServe
+    post:
+      description: check ownership if already exists
+      # used as the method name of the controller
+      operationId: injectbranchRoles
+      consumes:
+        - application/json
+        - text/plain
+      produces:
+      - text/plain
+      - application/json
+      security:
+        - UserSecurity: []
+      parameters:
+       - name: ownershipId
+         in: path
+         description: Delete an ownershipanization. Only users with owner role of the ownershipanization will be able to delete the ownership
+         required: true
+         type: string
+       - name: body
+         in: body
+         required: false
+         schema:
+          $ref: "#/definitions/permissionsDef"  
+      responses:
+        "200":
+          description: Got success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/msResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  
+  /swagger:
+    x-swagger-pipe: swagger_raw
+# complex objects have schema definitions
+definitions:
+  msResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
+  ErrorResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
+  permissionsDef:
+    type: "object"
+  ownershipUpdateDef:
+    properties:
+      ownershipDescription:
+        type: string
+      plan:
+        type: string
+      location:
+        type: string
+      billingEmail:
+        type: string
+  ownershipCreateDef:
+    required: ['ownershipName']
+    properties:
+      ownershipName:
+        type: string
+      ownershipDescription:
+        type: string
+  branchCreateDef:
+    required: ['branchName']
+    properties:
+      branchName:
+        type: string
+      branchDescription:
+        type: string
+  updatebranchDef:
+    type: "object"
+    required: ["users"]
+    properties:
+      branchName:
+        type: string
+      branchDescription:
+        type: string
+      users:
+        type: "array"
+        items:
+          $ref : "#/definitions/usersObj"
+  saveRolesDef:
+    type: "array"
+    items:
+      $ref : "#/definitions/roles"
+  roles:
+    type: "object"
+    required: ["ProductName", "Role"]
+    properties:
+      ProductName: 
+        type: string
+      Role:
+        type: string
+  memberAddDef:
+    properties:
+      role:
+        type: string
+  usersObj:
+    type: "object"
+    required: ["email"]
+    properties:
+      email:
+        type: string

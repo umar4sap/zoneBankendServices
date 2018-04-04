@@ -1,0 +1,34 @@
+{
+  "name": "ownership-management-serve",
+  "version": "0.0.2",
+  "private": true,
+  "description": "Microservices to create ,update, delete an ownership and branch ",
+  "keywords": [],
+  "author": "Mr.Umar",
+  "license": "",
+  "main": "app.js",
+  "dependencies": {
+    "bunyan": "^1.8.8",
+    "dotenv": "^4.0.0",
+    "fs": "0.0.1-security",
+    "latest": "^0.2.0",
+    "promise": "^8.0.1",
+    "q": "^1.5.1",
+    "restify": "^4.0.2",
+    "restify-jwt": "^0.4.0",
+    "rethinkdb": "^2.3.3",
+    "rethinkdbdash": "^2.3.31",
+    "swagger-restify-mw": "^0.1.0",
+    "underscore": "^1.8.3",
+    "uuid": "^3.2.1",
+    "uuid-v4": "^0.1.0"
+  },
+  "devDependencies": {
+    "should": "^7.1.0",
+    "supertest": "^1.0.0"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "test": "swagger project test"
+  }
+}
