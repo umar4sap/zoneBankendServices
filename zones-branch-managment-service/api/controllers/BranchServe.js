@@ -544,7 +544,7 @@ var get_branch_by_id = function (branchInfo, app_metadata) {
 //All branchs logic
 var get_user_associated_branchs = function (branchInfo, app_metadata) {
   return new Promise(function (resolve, reject) {
-    var currentPermissionsOwnerships = app_metadata.permissions
+    var currentPermissionsOwnerships = app_metadata.permissions.ownerships
     _.each(currentPermissionsOwnerships, function (ownership) {
       if (ownership.hasOwnProperty(branchInfo.ownershipId)) {
         resolve(ownership[branchInfo.ownershipId].branchs);

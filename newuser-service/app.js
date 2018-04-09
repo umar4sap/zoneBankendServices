@@ -6,18 +6,15 @@ var SwaggerRestify = require('swagger-restify-mw'),
     restify = require('restify'),
     jwt = require('restify-jwt'),
     cors = require('cors'),
-    Logger = require('bunyan'),
+   
    
     fs = require('fs'),
-    _ = require('lodash'),
-    log = new Logger.createLogger({
-        name: 'auth0-service',
-        serializers: { req: Logger.stdSerializers.req }
-    });
+    _ = require('lodash');
+   
 
 
 //GLOBALS
-var app = restify.createServer({ log: log });
+var app = restify.createServer();
 //var publicKey = fs.readFileSync(__dirname + '/config/sysgain.pem');
 
 
@@ -43,10 +40,7 @@ app.use(cors());
 app.use(restify.queryParser());
 app.use(restify.bodyParser());
 app.use(jwt);
-app.pre(function(req, res, next) {
-    req.log.info({ req: req }, 'REQUEST');
-    next();
-});
+
 app.listen(port);
 
 //swagger config
