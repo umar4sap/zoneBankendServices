@@ -1,11 +1,11 @@
 module.exports = {
     rethinkdb: {
         //host: "127.0.0.1",
-        host: process.env.DB_HOST || "localhost",
+        host:"159.65.15.180",
         //db host
-        port: process.env.DB_PORT || 28015,
+        port:  28015,
         authKey: "",
-        db: "zones_customerDB",
+        db: "zoneapp",
     },
     tables: [
         {
