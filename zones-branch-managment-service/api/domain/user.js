@@ -164,7 +164,7 @@ function addOwnershipTo_metadata(Auth0ManageToken, userid, currentMetaData, owne
       [ownershipInfo.ownershipName]: {
         "branchs": [{
           "branch": "owners",
-          "role": "administrator",
+          "role": "admin",
           "subscriptions":[{
             "planName":"freeZoneListing",
             "expireAt":"21 june 2018"

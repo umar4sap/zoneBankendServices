@@ -321,8 +321,11 @@ function getAllbranchs(req, res) {
                             })
                           });
                           userbranchs = userbranchs.concat(ownershipbranchs.data);
+                          res.send(200, userbranchs);
+                        }else{
+                          res.send(200, branchs);
                         }
-                        res.send(200, userbranchs);
+                        
                       });
                   } else {
                     res.send(200, branchs);
