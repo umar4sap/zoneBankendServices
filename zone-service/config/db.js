@@ -1,6 +1,6 @@
 module.exports = {
     rethinkdb: {
-        host: process.env.DB_HOST ||"159.65.15.180", // for docker 
+        host: process.env.DB_HOST ||"localhost", // for docker 
         port: process.env.DB_PORT || 28015,
         authKey: "",
         db: "zoneapp",
