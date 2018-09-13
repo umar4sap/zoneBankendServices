@@ -2,7 +2,7 @@
 var config={}
 config.rethinkdb = {
 //host: "127.0.0.1",
-host: "159.65.15.180",
+host:process.env.DB_HOST ||"localhost",
 //db host
 port: 28015,
 authKey: "",
