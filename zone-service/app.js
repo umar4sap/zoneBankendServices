@@ -18,13 +18,12 @@ var SwaggerRestify = require('swagger-restify-mw'),
 
 //GLOBALS
 var app = restify.createServer({ log: log });
-//var publicKey = fs.readFileSync(__dirname + '/config/sysgain.pem');
-
+var publicKey = fs.readFileSync(__dirname + '/config/zones.pem');
 
 var port = "9004";
 var jwt = jwt({
-    //secret: publicKey,
-    secret: "-QZB4_uxwVfzgDieFPdzt_ItmN74bplBHYLeE-v049nakX1ada3N2xziJeOMNthF",
+    secret: publicKey,
+    //secret: "-QZB4_uxwVfzgDieFPdzt_ItmN74bplBHYLeE-v049nakX1ada3N2xziJeOMNthF",
     audience: "cO02S01qm4vmAp2jhUtuLI4iAfQgXNx4",//process.env.AUTH0_CLIENT_ID,
     credentialsRequired: false,
     getToken: function fromHeaderOrQuerystring(req) {
