@@ -1,0 +1,36 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.19.0
+ignore: {}
+# patches apply the minimum changes required to fix a vulnerability
+patch:
+  'npm:debug:20170905':
+    - swagger-restify-mw > swagger-node-runner > swagger-tools > body-parser > debug:
+        patched: '2020-07-29T23:32:38.166Z'
+  'npm:extend:20180424':
+    - swagger-restify-mw > swagger-node-runner > swagger-tools > superagent > extend:
+        patched: '2020-07-29T23:32:38.166Z'
+  'npm:lodash:20180130':
+    - swagger-restify-mw > swagger-node-runner > lodash:
+        patched: '2020-07-29T23:32:38.166Z'
+    - swagger-restify-mw > swagger-node-runner > bagpipes > lodash:
+        patched: '2020-07-29T23:32:38.166Z'
+    - swagger-restify-mw > swagger-node-runner > bagpipes > machinepack-http > lodash:
+        patched: '2020-07-29T23:32:38.166Z'
+    - swagger-restify-mw > swagger-node-runner > bagpipes > machinepack-http > machine > lodash:
+        patched: '2020-07-29T23:32:38.166Z'
+    - swagger-restify-mw > swagger-node-runner > bagpipes > machinepack-http > machinepack-urls > lodash:
+        patched: '2020-07-29T23:32:38.166Z'
+    - swagger-restify-mw > swagger-node-runner > bagpipes > machinepack-http > machine > rttc > lodash:
+        patched: '2020-07-29T23:32:38.166Z'
+    - swagger-restify-mw > swagger-node-runner > bagpipes > machinepack-http > machinepack-urls > machine > lodash:
+        patched: '2020-07-29T23:32:38.166Z'
+    - swagger-restify-mw > swagger-node-runner > bagpipes > machinepack-http > machinepack-urls > machine > rttc > lodash:
+        patched: '2020-07-29T23:32:38.166Z'
+  'npm:mime:20170907':
+    - swagger-restify-mw > swagger-node-runner > swagger-tools > superagent > mime:
+        patched: '2020-07-29T23:32:38.166Z'
+  'npm:ms:20170412':
+    - restify-jwt > jsonwebtoken > ms:
+        patched: '2020-07-29T23:32:38.166Z'
+    - swagger-restify-mw > swagger-node-runner > swagger-tools > body-parser > debug > ms:
+        patched: '2020-07-29T23:32:38.166Z'

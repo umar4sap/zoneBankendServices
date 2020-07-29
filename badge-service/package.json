@@ -1,42 +1,46 @@
 {
-    "name": "pipeline-services",
-    "version": "0.0.1",
-    "private": true,
-    "description": "pipeline-services API Project",
-    "keywords": [],
-    "author": "",
-    "license": "",
-    "main": "app.js",
-    "dependencies": {
-        "async": "^2.6.0",
-        "bunyan": "^1.8.8",
-        "cors": "^2.8.4",
-        "csvjson": "^5.0.0",
-        "dotenv": "^4.0.0",
-        "http-json": "^1.2.2",
-        "js-base64": "^2.4.0",
-        "lodash": "latest",
-        "mocha": "^4.0.1",
-        "node-validator": "^0.1.27",
-        "node-vault": "^0.7.1",
-        "nyc": "^11.4.1",
-        "q": "^1.5.0",
-        "request": "^2.83.0",
-        "request-promise": "^4.2.1",
-        "restify": "^4.0.2",
-        "restify-jwt": "^0.4.0",
-        "rethink": "^1.4.0",
-        "rethinkdbdash": "^2.3.31",
-        "swagger-restify-mw": "^0.1.0"
-    },
-    "devDependencies": {
-        "chai": "^4.1.2",
-        "should": "^7.1.1",
-        "supertest": "^1.2.0"
-    },
-    "scripts": {
-        "start": "node app.js",
-        "test": "nyc mocha test/api/**/*.js",
-        "coverage": "nyc report"
-    }
+  "name": "pipeline-services",
+  "version": "0.0.1",
+  "private": true,
+  "description": "pipeline-services API Project",
+  "keywords": [],
+  "author": "",
+  "license": "",
+  "main": "app.js",
+  "dependencies": {
+    "async": "^2.6.0",
+    "bunyan": "^1.8.8",
+    "cors": "^2.8.4",
+    "csvjson": "^5.0.0",
+    "dotenv": "^4.0.0",
+    "http-json": "^1.2.2",
+    "js-base64": "^2.4.0",
+    "lodash": "latest",
+    "mocha": "^6.2.3",
+    "node-validator": "^0.1.27",
+    "node-vault": "^0.7.1",
+    "nyc": "^14.0.0",
+    "q": "^1.5.0",
+    "request": "^2.83.0",
+    "request-promise": "^4.2.1",
+    "restify": "^8.1.0",
+    "restify-jwt": "^0.4.0",
+    "rethink": "^1.4.0",
+    "rethinkdbdash": "^2.3.31",
+    "swagger-restify-mw": "^0.1.0",
+    "snyk": "^1.369.1"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "should": "^7.1.1",
+    "supertest": "^1.2.0"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "test": "nyc mocha test/api/**/*.js",
+    "coverage": "nyc report",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
+  },
+  "snyk": true
 }
