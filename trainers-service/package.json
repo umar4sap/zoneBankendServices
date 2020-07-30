@@ -14,7 +14,7 @@
         "csvjson": "^5.0.0",
         "dotenv": "^4.0.0",
         "http-json": "^1.2.2",
-        "js-base64": "^2.4.0",
+        "js-base64": "^2.6.3",
         "lodash": "latest",
         "mocha": "^4.0.1",
         "node-validator": "^0.1.27",
