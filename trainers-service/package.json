@@ -15,7 +15,7 @@
         "dotenv": "^4.0.0",
         "http-json": "^1.2.2",
         "js-base64": "^2.4.0",
-        "lodash": "latest",
+        "lodash": "4.17.17",
         "mocha": "^4.0.1",
         "node-validator": "^0.1.27",
         "node-vault": "^0.7.1",
