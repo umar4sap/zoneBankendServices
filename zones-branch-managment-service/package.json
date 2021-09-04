@@ -21,7 +21,8 @@
     "swagger-restify-mw": "^0.1.0",
     "underscore": "^1.8.3",
     "uuid": "^3.2.1",
-    "uuid-v4": "^0.1.0"
+    "uuid-v4": "^0.1.0",
+    "@snyk/protect": "latest"
   },
   "devDependencies": {
     "should": "^7.1.0",
@@ -29,6 +30,9 @@
   },
   "scripts": {
     "start": "node app.js",
-    "test": "swagger project test"
-  }
+    "test": "swagger project test",
+    "prepublish": "npm run snyk-protect",
+    "snyk-protect": "snyk-protect"
+  },
+  "snyk": true
 }
