@@ -8,7 +8,7 @@
     "license": "",
     "main": "app.js",
     "dependencies": {
-        "async": "^2.6.0",
+        "async": "^3.2.2",
         "bunyan": "^1.8.8",
         "cors": "^2.8.4",
         "csvjson": "^5.0.0",
