@@ -16,7 +16,7 @@
         "http-json": "^1.2.2",
         "js-base64": "^2.4.0",
         "lodash": "latest",
-        "mocha": "^4.0.1",
+        "mocha": "^10.1.0",
         "node-validator": "^0.1.27",
         "node-vault": "^0.7.1",
         "nyc": "^11.4.1",
