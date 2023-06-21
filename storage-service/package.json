@@ -13,7 +13,7 @@
     "fs": "0.0.1-security",
     "q": "^1.5.0",
     "request-promise": "^4.2.1",
-    "restify": "^4.0.2",
+    "restify": "^10.0.0",
     "restify-jwt": "^0.4.0",
     "swagger-restify-mw": "^0.1.0"
   },
