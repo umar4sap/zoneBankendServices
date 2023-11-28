@@ -24,9 +24,9 @@
     "restify-jwt": "^0.4.0",
     "rethink": "^1.4.0",
     "rethinkdbdash": "^2.3.31",
-    "swagger-restify-mw": "^0.1.0",
+    "swagger-restify-mw": "^0.6.0",
     "underscore": "^1.8.3",
-    "validate": "^3.0.1"
+    "validate": "^5.2.0"
   },
   "devDependencies": {
     "chai": "^4.1.2",
