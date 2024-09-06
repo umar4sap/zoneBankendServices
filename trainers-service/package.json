@@ -8,7 +8,7 @@
     "license": "",
     "main": "app.js",
     "dependencies": {
-        "async": "^2.6.0",
+        "async": "^3.0.0",
         "bunyan": "^1.8.8",
         "cors": "^2.8.4",
         "csvjson": "^5.0.0",
@@ -18,16 +18,16 @@
         "lodash": "latest",
         "mocha": "^4.0.1",
         "node-validator": "^0.1.27",
-        "node-vault": "^0.7.1",
-        "nyc": "^11.4.1",
+        "node-vault": "^0.10.0",
+        "nyc": "^17.0.0",
         "q": "^1.5.0",
         "request": "^2.83.0",
         "request-promise": "^4.2.1",
-        "restify": "^4.0.2",
+        "restify": "^9.0.0",
         "restify-jwt": "^0.4.0",
         "rethink": "^1.4.0",
         "rethinkdbdash": "^2.3.31",
-        "swagger-restify-mw": "^0.1.0"
+        "swagger-restify-mw": "^0.6.0"
     },
     "devDependencies": {
         "chai": "^4.1.2",
