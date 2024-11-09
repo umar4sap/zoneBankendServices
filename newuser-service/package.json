@@ -21,7 +21,7 @@
     "dotenv": "^4.0.0",
     "js-yaml": "^3.3.0",
     "lodash": "^4.17.5",
-    "cross-spawn": "^5.1.0",
+    "cross-spawn": "^7.0.5",
     "locate-path": "^2.0.0",
     "moment": "^2.20.1",
     "node-validator": "^0.1.27",
