@@ -19,7 +19,7 @@
         "mocha": "^4.0.1",
         "node-validator": "^0.1.27",
         "node-vault": "^0.7.1",
-        "nyc": "^11.4.1",
+        "nyc": "^15.0.0",
         "q": "^1.5.0",
         "request": "^2.83.0",
         "request-promise": "^4.2.1",
