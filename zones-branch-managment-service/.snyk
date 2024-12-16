@@ -1,0 +1,93 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.25.1
+ignore: {}
+# patches apply the minimum changes required to fix a vulnerability
+patch:
+  'npm:hoek:20180212':
+    - latest > npm > request > hawk > hoek:
+        patched: '2024-12-16T02:27:54.966Z'
+        id: 'npm:hoek:20180212'
+        path: latest > npm > request > hawk > hoek
+    - latest > npm > request > hawk > boom > hoek:
+        patched: '2024-12-16T02:27:54.966Z'
+        id: 'npm:hoek:20180212'
+        path: latest > npm > request > hawk > boom > hoek
+    - latest > npm > request > hawk > sntp > hoek:
+        patched: '2024-12-16T02:27:54.966Z'
+        id: 'npm:hoek:20180212'
+        path: latest > npm > request > hawk > sntp > hoek
+    - latest > npm > node-gyp > request > hawk > hoek:
+        patched: '2024-12-16T02:27:54.966Z'
+        id: 'npm:hoek:20180212'
+        path: latest > npm > node-gyp > request > hawk > hoek
+    - latest > npm > request > hawk > cryptiles > boom > hoek:
+        patched: '2024-12-16T02:27:54.966Z'
+        id: 'npm:hoek:20180212'
+        path: latest > npm > request > hawk > cryptiles > boom > hoek
+    - latest > npm > node-gyp > request > hawk > boom > hoek:
+        patched: '2024-12-16T02:27:54.966Z'
+        id: 'npm:hoek:20180212'
+        path: latest > npm > node-gyp > request > hawk > boom > hoek
+    - latest > npm > node-gyp > request > hawk > sntp > hoek:
+        patched: '2024-12-16T02:27:54.966Z'
+        id: 'npm:hoek:20180212'
+        path: latest > npm > node-gyp > request > hawk > sntp > hoek
+    - latest > npm > node-gyp > request > hawk > cryptiles > boom > hoek:
+        patched: '2024-12-16T02:27:54.966Z'
+        id: 'npm:hoek:20180212'
+        path: latest > npm > node-gyp > request > hawk > cryptiles > boom > hoek
+  'npm:lodash:20180130':
+    - swagger-restify-mw > swagger-node-runner > lodash:
+        patched: '2024-12-16T02:27:54.966Z'
+        id: 'npm:lodash:20180130'
+        path: swagger-restify-mw > swagger-node-runner > lodash
+    - swagger-restify-mw > swagger-node-runner > bagpipes > lodash:
+        patched: '2024-12-16T02:27:54.966Z'
+        id: 'npm:lodash:20180130'
+        path: swagger-restify-mw > swagger-node-runner > bagpipes > lodash
+    - swagger-restify-mw > swagger-node-runner > bagpipes > machinepack-http > lodash:
+        patched: '2024-12-16T02:27:54.966Z'
+        id: 'npm:lodash:20180130'
+        path: >-
+          swagger-restify-mw > swagger-node-runner > bagpipes > machinepack-http
+          > lodash
+    - swagger-restify-mw > swagger-node-runner > bagpipes > machinepack-http > machine > lodash:
+        patched: '2024-12-16T02:27:54.966Z'
+        id: 'npm:lodash:20180130'
+        path: >-
+          swagger-restify-mw > swagger-node-runner > bagpipes > machinepack-http
+          > machine > lodash
+    - swagger-restify-mw > swagger-node-runner > bagpipes > machinepack-http > machinepack-urls > lodash:
+        patched: '2024-12-16T02:27:54.966Z'
+        id: 'npm:lodash:20180130'
+        path: >-
+          swagger-restify-mw > swagger-node-runner > bagpipes > machinepack-http
+          > machinepack-urls > lodash
+    - swagger-restify-mw > swagger-node-runner > bagpipes > machinepack-http > machine > rttc > lodash:
+        patched: '2024-12-16T02:27:54.966Z'
+        id: 'npm:lodash:20180130'
+        path: >-
+          swagger-restify-mw > swagger-node-runner > bagpipes > machinepack-http
+          > machine > rttc > lodash
+    - swagger-restify-mw > swagger-node-runner > bagpipes > machinepack-http > machinepack-urls > machine > lodash:
+        patched: '2024-12-16T02:27:54.966Z'
+        id: 'npm:lodash:20180130'
+        path: >-
+          swagger-restify-mw > swagger-node-runner > bagpipes > machinepack-http
+          > machinepack-urls > machine > lodash
+    - swagger-restify-mw > swagger-node-runner > bagpipes > machinepack-http > machinepack-urls > machine > rttc > lodash:
+        patched: '2024-12-16T02:27:54.966Z'
+        id: 'npm:lodash:20180130'
+        path: >-
+          swagger-restify-mw > swagger-node-runner > bagpipes > machinepack-http
+          > machinepack-urls > machine > rttc > lodash
+  'npm:ms:20170412':
+    - restify-jwt > jsonwebtoken > ms:
+        patched: '2024-12-16T02:27:54.966Z'
+        id: 'npm:ms:20170412'
+        path: restify-jwt > jsonwebtoken > ms
+  'npm:tunnel-agent:20170305':
+    - latest > npm > request > tunnel-agent:
+        patched: '2024-12-16T02:27:54.966Z'
+        id: 'npm:tunnel-agent:20170305'
+        path: latest > npm > request > tunnel-agent
